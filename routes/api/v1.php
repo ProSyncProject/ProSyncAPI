@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-//    'prefix' => 'auth',
-//    'as' => 'auth.',
-//    'controller' => \App\Http\Controllers\AuthenticationController::class
+    'prefix' => 'auth',
+    'as' => 'auth.',
+    'controller' => \App\Http\Controllers\AuthenticationController::class
 ], function() {
     Route::post('/login', 'login')->name('login');
 
-    Route::group([
-        'middleware' => 'auth:sanctum'
-    ], function() {
-        Route::get('/echo', 'echo')->name('echo');
-        Route::get('/profile', 'profile')->name('profile');
-    });
+//    Route::group([
+//        'middleware' => 'auth:sanctum'
+//    ], function() {
+//        Route::get('/echo', 'echo')->name('echo');
+//        Route::get('/profile', 'profile')->name('profile');
+//    });
 });
