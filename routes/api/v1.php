@@ -20,6 +20,7 @@ Route::group([
     'controller' => \App\Http\Controllers\AuthenticationController::class
 ], function() {
     Route::post('/login', 'login')->name('login');
+    Route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
 
     Route::group([
         'middleware' => 'auth:sanctum'

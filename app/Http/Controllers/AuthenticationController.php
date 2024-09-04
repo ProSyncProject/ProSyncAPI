@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\User\UserResource;
+use App\Mail\Auth\ResetPasswordEmail;
+use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 
 class AuthenticationController extends Controller
@@ -25,7 +29,7 @@ class AuthenticationController extends Controller
     {
         try {
             $login = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-            $user = User::where($login, $request->login)->first();
+            $user = User::where($login, $request->login)->firstOrFail();
             if (!$user || !password_verify($request->password, $user->password)) {
                 return Response::error("Invalid credentials.", 403);
             }
@@ -64,6 +68,37 @@ class AuthenticationController extends Controller
             return Response::error($e);
         }
         return Response::success($resource, "User profile fetched successfully.");
+    }
+
+    /**
+     * Send Forgot Password OTP (through Email)
+     *
+     * @param ForgotPasswordRequest $request
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "Email sent successfully."}
+     * @unauthenticated
+     */
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        try {
+            $login = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+            $user = User::where($login, $request->login)->firstOrFail();
+
+            $otp = random_int(100000, 999999);
+            $user->otpCodes()->create([
+                'otp' => $otp,
+                'type' => 'reset_password'
+            ]);
+
+            Mail::to($user->email)->queue(new ResetPasswordEmail([
+                'otp' => $otp,
+                'name' => $user->full_name
+            ]));
+
+        } catch (\Exception $exception) {
+            return Response::error($exception);
+        }
+        return Response::success(null, "Email sent successfully.");
     }
 
     /**

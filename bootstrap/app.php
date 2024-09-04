@@ -69,9 +69,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     'status' => 400,
                     'message' => 'Bad request.',
                     'data' => null
-                ], 403);
+                ], 400);
             }
-            abort(403);
+            abort(400);
         })->render(function (\Illuminate\Auth\Access\AuthorizationException $e, Request $request) {
             errorLogger($e, $request);
             if ($request->is('api/*')) {
