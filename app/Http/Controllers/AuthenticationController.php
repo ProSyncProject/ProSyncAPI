@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\User\UserResource;
 use App\Mail\Auth\ResetPasswordEmail;
-use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -99,6 +99,37 @@ class AuthenticationController extends Controller
             return Response::error($exception);
         }
         return Response::success(null, "Email sent successfully.");
+    }
+
+    /**
+     * Reset the password
+     *
+     * @param ResetPasswordRequest $request
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "Password reset successfully."}
+     * @response array{"status": 404, "message": "Invalid OTP."}
+     * @unauthenticated
+     */
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        try {
+            $login = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+            $user = User::where($login, $request->login)->firstOrFail();
+            $otp = $user->otpCodes()->where('otp', $request->otp)->orderBy('created_at', 'desc')->first();
+            if (!$otp) {
+                return Response::error("Invalid OTP.", 404);
+            }
+            if (password_verify($request->password, $user->password)) {
+                return Response::error("New password cannot be the same as the old password.", 422);
+            }
+            $user->update([
+                'password' => bcrypt($request->password)
+            ]);
+            $otp->delete();
+        } catch (\Exception $e) {
+            return Response::error($e);
+        }
+        return Response::success(null, "Password reset successfully.");
     }
 
     /**
