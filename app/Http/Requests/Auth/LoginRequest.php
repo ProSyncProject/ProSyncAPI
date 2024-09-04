@@ -36,4 +36,21 @@ class LoginRequest extends FormRequest
             'password' => ['required', 'string', 'max:255', 'min:3'],
         ];
     }
+
+
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param \Illuminate\Contracts\Validation\Validator $validator
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        throw new \Illuminate\Validation\ValidationException($validator, response()->json([
+            'status' => 422,
+            'message' => 'The given data was invalid.',
+            'errors' => $validator->errors(),
+        ], 422));
+    }
 }

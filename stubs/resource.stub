@@ -20,10 +20,10 @@ class {{ class }} extends JsonResource
     {
         return [
             /**
-             * @var int $id
-             * @example 1
+             * @var string $unique_id The unique identifier of the resource
+             * @example "8aSuRX7YmXEwnLgBKNp6s"
              */
-            'id' => $this->id,
+            "unique_id" => $this->unique_id,
         ];
     }
 }

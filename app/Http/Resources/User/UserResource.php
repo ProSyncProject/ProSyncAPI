@@ -21,10 +21,10 @@ class UserResource extends JsonResource
     {
         return [
             /**
-             * @var int $id
-             * @example 1
+             * @var string $unique_id The unique identifier of the resource
+             * @example "8aSuRX7YmXEwnLgBKNp6s"
              */
-            'id' => $this->id,
+            "unique_id" => $this->unique_id,
             /**
              * The login token
              * @var string|null $token The login token
@@ -62,11 +62,6 @@ class UserResource extends JsonResource
              * @example "achyut"
              */
             'username' => $this->username,
-            /**
-             * @var string $unique_id The unique identifier of the user
-             * @example "8aSuRX7YmXEwnLgBKNp6s"
-             */
-            "unique_id" => $this->unique_id,
             /**
              * @var string $email_verified_at The email_verified_at of the user
              * @format date-time
