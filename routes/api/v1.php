@@ -33,3 +33,7 @@ Route::group([
         Route::post('/logout', 'logout')->name('logout');
     });
 });
+
+Route::apiResources([
+    'projects' => \App\Http\Controllers\ProjectController::class,
+]);
