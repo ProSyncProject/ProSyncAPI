@@ -28,6 +28,8 @@ Route::group([
     ], function() {
         Route::get('/echo', 'echo')->name('echo');
         Route::get('/profile', 'profile')->name('profile');
+        Route::get('/refresh', 'refresh')->name('refresh');
+        Route::post('/change-password', 'changePassword')->name('change-password');
         Route::post('/logout', 'logout')->name('logout');
     });
 });
