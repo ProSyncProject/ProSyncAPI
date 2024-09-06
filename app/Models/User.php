@@ -72,4 +72,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Otp::class);
     }
+
+    /**
+     * Get the projects that the user created or is a member of.
+     *
+     * @return HasMany
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'owner_id');
+    }
 }

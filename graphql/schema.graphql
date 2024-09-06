@@ -1,0 +1,41 @@
+#import enum.graphql
+#import queries.graphql
+
+type User {
+    id: Int!
+    unique_id: String!
+    first_name: String!
+    middle_name: String
+    last_name: String!
+    full_name: String!
+    username: String!
+    email: String!
+    email_verified_at: String
+    password: String!
+    rememberToken: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    projects: [Project!]! @hasMany
+}
+
+type Project {
+    unique_id: String!
+    name: String!
+    description: String
+    prefix: String
+    owner_id: Int!
+    start_date: String
+    end_date: String
+    status: Status!
+    parent_id: Int
+    privacy: Privacy!
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    owner: User! @belongsTo
+    children: [Project!]! @hasMany
+    parent: Project @belongsTo
+}

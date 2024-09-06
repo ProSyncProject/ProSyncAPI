@@ -34,6 +34,7 @@ Route::group([
     });
 });
 
-Route::apiResources([
-    'projects' => \App\Http\Controllers\ProjectController::class,
-]);
+Route::group([
+    'middleware' => 'auth:sanctum'
+], function() {
+});
