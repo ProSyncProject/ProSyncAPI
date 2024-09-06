@@ -5,14 +5,14 @@ type Project {
     description: String
     prefix: String
     owner_id: Int!
-    start_date: String
-    end_date: String
+    start_date: Date
+    end_date: Date
     status: Status!
     parent_id: Int
     privacy: Privacy!
-    deleted_at: String
-    created_at: String!
-    updated_at: String!
+    deleted_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
 
     owner: User! @belongsTo
     children: [Project!]! @hasMany
