@@ -14,7 +14,7 @@ type Project {
     created_at: String!
     updated_at: String!
 
-    owner: User! @belongsTo
+    users: [User!]! @belongsToMany
     children: [Project!]! @hasMany
     parent: Project @belongsTo
 }

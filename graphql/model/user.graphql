@@ -14,7 +14,7 @@ type User {
     created_at: String!
     updated_at: String!
 
-    projects: [Project!]! @hasMany
+    projects: [Project!]! @belongsToMany
 }
 
 extend type Query {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,12 +75,12 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the projects that the user created or is a member of.
+     * Get the projects that the user is a member of.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function projects(): HasMany
+    public function projects(): BelongsToMany
     {
-        return $this->hasMany(Project::class, 'owner_id');
+        return $this->belongsToMany(Project::class)->using(ProjectUser::class)->withPivot('role');
     }
 }

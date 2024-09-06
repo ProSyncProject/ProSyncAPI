@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,13 +16,13 @@ class Project extends Model
     protected $guarded = [];
 
     /**
-     * Get the owner that owns the Project
+     * Get the users associated with the project
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
-    public function owner(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsToMany(User::class)->using(ProjectUser::class)->withPivot('role');
     }
 
     /**
