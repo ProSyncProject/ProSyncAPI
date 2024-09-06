@@ -22,4 +22,14 @@ class IssueStatus extends Model
     {
         return $this->hasMany(Issue::class, 'status_id');
     }
+
+    /**
+     * The sub-issues associated with the issue status
+     *
+     * @return HasMany
+     */
+    public function subIssues(): HasMany
+    {
+        return $this->hasMany(SubIssue::class, 'status_id');
+    }
 }

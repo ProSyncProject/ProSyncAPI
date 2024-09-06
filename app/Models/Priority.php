@@ -21,4 +21,14 @@ class Priority extends Model
     {
         return $this->hasMany(Issue::class);
     }
+
+    /**
+     * The subIssues associated with the priority
+     *
+     * @return HasMany
+     */
+    public function subIssues(): HasMany
+    {
+        return $this->hasMany(SubIssue::class);
+    }
 }

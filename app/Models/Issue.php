@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use AchyutN\LaravelComment\Traits\HasComment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Issue extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasComment;
 
     protected $fillable = [
         'unique_id',
@@ -117,5 +119,15 @@ class Issue extends Model
     public function activeSprint(): Sprint
     {
         return $this->sprints()->orderBy('start_date', 'desc')->first();
+    }
+
+    /**
+     * Get the subIssues for the issue.
+     *
+     * @return HasMany
+     */
+    public function subIssues(): HasMany
+    {
+        return $this->hasMany(SubIssue::class);
     }
 }
