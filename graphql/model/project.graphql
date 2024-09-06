@@ -1,0 +1,28 @@
+type Project {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    prefix: String
+    owner_id: Int!
+    start_date: String
+    end_date: String
+    status: Status!
+    parent_id: Int
+    privacy: Privacy!
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    owner: User! @belongsTo
+    children: [Project!]! @hasMany
+    parent: Project @belongsTo
+}
+
+extend type Query {
+    allProjects: [Project!]! @all
+    paginatedProjects(page: Int! @eq): [Project!]! @paginate
+    getProjectByUniqueId(unique_id: String! @like): Project @find
+    getProjectByName(name: String! @like): Project @find
+    getProjectByPrefix(prefix: String! @like): Project @find
+}

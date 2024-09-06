@@ -1,0 +1,26 @@
+type User {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    first_name: String!
+    middle_name: String
+    last_name: String!
+    full_name: String!
+    username: String!
+    email: String!
+    email_verified_at: String
+    password: String! @hide(env: ["production", "local"])
+    rememberToken: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    projects: [Project!]! @hasMany
+}
+
+extend type Query {
+    allUsers: [User!]! @all
+    paginatedUsers(page: Int! @eq): [User!]! @paginate
+    getUserByUniqueId(unique_id: String! @like): User @find
+    getUserByEmail(email: String! @like): User @find
+    getUserByUsername(username: String! @like): User @find
+}
