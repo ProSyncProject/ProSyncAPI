@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
+            $table->boolean('is_resolved')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

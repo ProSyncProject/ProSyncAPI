@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProjectUser extends Pivot
 {
-    protected $table = 'project_user';
+    use SoftDeletes;
 
     protected $fillable = ['role'];
 

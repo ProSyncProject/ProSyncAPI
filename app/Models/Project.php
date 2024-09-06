@@ -55,4 +55,13 @@ class Project extends Model
         return $this->hasMany(Epic::class);
     }
 
+    /**
+     * The issues associated with the project
+     *
+     * @return HasMany
+     */
+    public function issues(): HasMany
+    {
+        return $this->hasMany(Issue::class);
+    }
 }
