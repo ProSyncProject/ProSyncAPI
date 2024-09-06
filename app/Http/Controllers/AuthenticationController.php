@@ -43,34 +43,6 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Verify the access token
-     *
-     * @return JsonResponse<bool>
-     * @response array{"status": 200, "message": "Token is valid.", "data": true}
-     */
-    public function echo(): JsonResponse
-    {
-        return Response::success(true, "Token is valid.");
-    }
-
-    /**
-     * Get the authenticated user profile
-     *
-     * @return JsonResponse
-     * @response array{"status": 200, "message": "User profile fetched successfully.", "data": UserResource}
-     */
-    public function profile(): JsonResponse
-    {
-        try {
-            $user = User::findOrFail(auth()->id());
-            $resource = new UserResource($user);
-        } catch (\Exception $e) {
-            return Response::error($e);
-        }
-        return Response::success($resource, "User profile fetched successfully.");
-    }
-
-    /**
      * Send Forgot Password OTP (through Email)
      *
      * @param ForgotPasswordRequest $request
@@ -130,6 +102,87 @@ class AuthenticationController extends Controller
             return Response::error($e);
         }
         return Response::success(null, "Password reset successfully.");
+    }
+
+    /**
+     * Verify the access token
+     *
+     * @return JsonResponse<bool>
+     * @response array{"status": 200, "message": "Token is valid.", "data": true}
+     */
+    public function echo(): JsonResponse
+    {
+        return Response::success(true, "Token is valid.");
+    }
+
+    /**
+     * Get the authenticated user profile
+     *
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "User profile fetched successfully.", "data": UserResource}
+     */
+    public function profile(): JsonResponse
+    {
+        try {
+            $user = User::findOrFail(auth()->id());
+            $resource = new UserResource($user);
+        } catch (\Exception $e) {
+            return Response::error($e);
+        }
+        return Response::success($resource, "User profile fetched successfully.");
+    }
+
+    /**
+     * Refresh the access token
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "Token refreshed successfully.", "data": UserResource}
+     */
+    public function refresh(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            $request->user()->currentAccessToken()->delete();
+
+            $token = $user->createToken("auth_token")->plainTextToken;
+            $user->token = $token;
+            $resource = new UserResource($user);
+        } catch (\Exception $e) {
+            return Response::error($e);
+        }
+        return Response::success($resource, "Token refreshed successfully.");
+    }
+
+    /**
+     * Change the password
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "Password changed successfully."}
+     */
+    public function changePassword(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'old_password' => 'required|string',
+                'new_password' => 'required|string|min:8|confirmed'
+            ]);
+            $user = $request->user();
+            if (!password_verify($request->old_password, $user->password)) {
+                return Response::error("Old password is incorrect.", 422);
+            }
+            if (password_verify($request->new_password, $user->password)) {
+                return Response::error("New password cannot be the same as the old password.", 422);
+            }
+            $user->update([
+                'password' => bcrypt($request->new_password)
+            ]);
+        } catch (\Exception $e) {
+            return Response::error($e);
+        }
+        return Response::success(null, "Password changed successfully.");
     }
 
     /**

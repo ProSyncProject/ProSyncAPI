@@ -1,0 +1,9 @@
+enum Status {
+    ACTIVE @enum(value: "active")
+    INACTIVE @enum(value: "inactive")
+}
+
+enum Privacy {
+    PUBLIC @enum(value: "public")
+    PRIVATE @enum(value: "private")
+}

@@ -20,3 +20,6 @@ yarn-error.log
 /.vscode
 composer.lock
 .DS_Store
+_lighthouse_ide_helper.php
+programmatic-types.graphql
+schema-directives.graphql

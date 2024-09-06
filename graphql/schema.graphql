@@ -1,0 +1,6 @@
+type Query {
+    currentUser: User @auth
+}
+
+#import enum.graphql
+#import model/*.graphql

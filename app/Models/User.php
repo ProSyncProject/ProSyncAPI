@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use AchyutN\LaravelComment\Traits\CanComment;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanComment;
 
     /**
      * The attributes that are guarded against mass assignment.
@@ -71,5 +73,55 @@ class User extends Authenticatable implements MustVerifyEmail
     public function otpCodes(): HasMany
     {
         return $this->hasMany(Otp::class);
+    }
+
+    /**
+     * Get the projects that the user is a member of.
+     *
+     * @return BelongsToMany
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)->using(ProjectUser::class)->withPivot('role')->withTimestamps();
+    }
+
+    /**
+     * The issues asssigned to the user.
+     *
+     * @return HasMany
+     */
+    public function issues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'assignee_id');
+    }
+
+    /**
+     * The issues created by the user.
+     *
+     * @return HasMany
+     */
+    public function createdIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'reporter_id');
+    }
+
+    /**
+     * The sub-issues asssigned to the user.
+     *
+     * @return HasMany
+     */
+    public function subIssues(): HasMany
+    {
+        return $this->hasMany(SubIssue::class, 'assignee_id');
+    }
+
+    /**
+     * The sub-issues created by the user.
+     *
+     * @return HasMany
+     */
+    public function createdSubIssues(): HasMany
+    {
+        return $this->hasMany(SubIssue::class, 'reporter_id');
     }
 }
