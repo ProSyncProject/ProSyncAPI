@@ -45,4 +45,14 @@ class Project extends Model
         return $this->hasMany(Project::class, 'parent_id');
     }
 
+    /**
+     * The epics associated with the project
+     *
+     * @return HasMany
+     */
+    public function epics(): HasMany
+    {
+        return $this->hasMany(Epic::class);
+    }
+
 }
