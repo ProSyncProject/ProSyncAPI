@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\IssueType::class, 'type_id')->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\IssueStatus::class, 'status_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\IssueType::class, 'type_id')->constrained('issue_types')->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\IssueStatus::class, 'status_id')->constrained('issue_statuses')->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Priority::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Epic::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\User::class, 'assignee_id')->nullable()->constrained('users')->cascadeOnDelete();
