@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Issue extends Model
@@ -94,5 +95,27 @@ class Issue extends Model
     public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reporter_id');
+    }
+
+    /**
+     * Get the sprints for the issue.
+     *
+     * @return BelongsToMany
+     */
+    public function sprints(): BelongsToMany
+    {
+        return $this->belongsToMany(Sprint::class)
+            ->using(IssueSprint::class)
+            ->withTimestamps();
+    }
+
+    /**
+     * Get active sprint for the issue.
+     *
+     * @return Sprint
+     */
+    public function activeSprint(): Sprint
+    {
+        return $this->sprints()->orderBy('start_date', 'desc')->first();
     }
 }
