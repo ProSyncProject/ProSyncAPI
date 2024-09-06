@@ -2,10 +2,5 @@ type Query {
     currentUser: User @auth
 }
 
-scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-scalar Time @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Time")
-scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
-
 #import enum.graphql
 #import model/*.graphql

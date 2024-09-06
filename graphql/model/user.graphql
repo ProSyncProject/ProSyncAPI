@@ -10,9 +10,9 @@ type User {
     email_verified_at: String
     password: String! @hide(env: ["production", "local"])
     rememberToken: String
-    deleted_at: DateTime
-    created_at: DateTime!
-    updated_at: DateTime!
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
 
     projects: [Project!]! @hasMany
 }
