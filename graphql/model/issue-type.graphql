@@ -3,11 +3,14 @@ type IssueType {
     unique_id: String!
     name: String!
     description: String
+    project_id: Int!
     deleted_at: String
     created_at: String!
     updated_at: String!
 
     issues: [Issue!]! @hasMany
+    subIssues: [SubIssue!]! @hasMany
+    project: Project! @belongsTo
 }
 
 extend type Query {
@@ -21,12 +24,14 @@ extend type Mutation {
     createIssueType(
         name: String!
         description: String
+        project_id: Int!
     ): IssueType @create
 
     updateIssueType(
         unique_id: String!
         name: String
         description: String
+        project_id: Int
     ): IssueType @update
 
     deleteIssueType(unique_id: String!): Boolean @delete(model: "IssueType")

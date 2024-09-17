@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([EpicObserver::class])]
 class Epic extends Model
 {
-    use SoftDeletes, HasUniqueId;
+    use SoftDeletes, HasUniqueId, HasFactory;
 
     protected $fillable = ['name', 'description', 'issue_number', 'unique_id', 'project_id'];
 

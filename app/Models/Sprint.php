@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([SprintObserver::class])]
 class Sprint extends Model
 {
-    use SoftDeletes, HasUniqueId;
+    use SoftDeletes, HasUniqueId, HasFactory;
 
     protected $fillable = [
         'unique_id',

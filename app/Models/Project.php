@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -59,6 +60,26 @@ class Project extends Model
     }
 
     /**
+     * The priorities associated with the project
+     *
+     * @return HasMany
+     */
+    public function priorities(): HasMany
+    {
+        return $this->hasMany(Priority::class);
+    }
+
+    /**
+     * The sprints associated with the project
+     *
+     * @return HasMany
+     */
+    public function sprints(): HasMany
+    {
+        return $this->hasMany(Sprint::class);
+    }
+
+    /**
      * The issues associated with the project
      *
      * @return HasMany
@@ -66,6 +87,16 @@ class Project extends Model
     public function issues(): HasMany
     {
         return $this->hasMany(Issue::class);
+    }
+
+    /**
+     * The sub-issues associated with the project
+     *
+     * @return HasManyThrough
+     */
+    public function subIssues(): HasManyThrough
+    {
+        return $this->hasManyThrough(SubIssue::class, Issue::class);
     }
 
     /**
