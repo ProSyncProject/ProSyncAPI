@@ -18,7 +18,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         $prefix = '';
-        for ($i = 0; $i < rand(2, 3); $i++) {
+        for ($i = 0; $i < $this->faker->randomElement([2,3]); $i++) {
             $prefix .= $this->faker->randomLetter;
         }
         return [
