@@ -1,4 +1,4 @@
-union Commentable = Issue | Project
+union Commentable = Issue | Project | SubIssue
 union Commenter = User
 
 type Comment {

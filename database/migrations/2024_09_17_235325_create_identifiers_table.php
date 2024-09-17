@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('epics', function (Blueprint $table) {
+        Schema::create('identifiers', function (Blueprint $table) {
             $table->id();
             $table->string('unique_id')->unique();
-            $table->string('name');
-            $table->text('description')->nullable();
             $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
+            $table->morphs('identifiable');
+            $table->integer('issue_number');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('epics');
+        Schema::dropIfExists('identifiers');
     }
 };

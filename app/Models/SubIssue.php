@@ -6,6 +6,7 @@ use AchyutN\LaravelComment\Traits\HasComment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubIssue extends Model
@@ -75,5 +76,15 @@ class SubIssue extends Model
     public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reporter_id');
+    }
+
+    /**
+     * Get the identifier for the sub-issue.
+     *
+     * @return MorphOne
+     */
+    public function identifier(): MorphOne
+    {
+        return $this->morphOne(Identifier::class, 'identifiable');
     }
 }
