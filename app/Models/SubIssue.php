@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([SubIssueObserver::class])]
 class SubIssue extends Model
 {
-    use SoftDeletes, HasComment, HasUniqueId;
+    use SoftDeletes, HasComment, HasUniqueId, HasFactory;
 
     protected $fillable = [
         'unique_id',
@@ -40,6 +40,16 @@ class SubIssue extends Model
     public function issue(): BelongsTo
     {
         return $this->belongsTo(Issue::class);
+    }
+
+    /**
+     * Get the project that owns the Issue that owns the SubIssue
+     *
+     * @return BelongsTo
+     */
+    public function project(): BelongsTo
+    {
+        return $this->issue->project();
     }
 
     /**

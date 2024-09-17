@@ -80,6 +80,26 @@ class Project extends Model
     }
 
     /**
+     * The issue types associated with the project
+     *
+     * @return HasMany
+     */
+    public function issueTypes(): HasMany
+    {
+        return $this->hasMany(IssueType::class);
+    }
+
+    /**
+     * The issue statuses associated with the project
+     *
+     * @return HasMany
+     */
+    public function issueStatuses(): HasMany
+    {
+        return $this->hasMany(IssueStatus::class);
+    }
+
+    /**
      * The issues associated with the project
      *
      * @return HasMany

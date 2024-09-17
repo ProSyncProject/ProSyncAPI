@@ -17,10 +17,14 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
+        $prefix = '';
+        for ($i = 0; $i < rand(2, 3); $i++) {
+            $prefix .= $this->faker->randomLetter;
+        }
         return [
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'prefix' => $this->faker->word,
+            'prefix' => strtoupper($prefix),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['active', 'inactive']),
