@@ -1,0 +1,18 @@
+type Priority {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    issues: [Issue!]! @hasMany
+}
+
+extend type Query {
+    allPriorities: [Priority!]! @all
+    paginatedPriorities(page: Int! @eq): [Priority!]! @paginate
+    getPriorityByUniqueId(unique_id: String! @like): Priority @find
+    getPriorityByName(name: String! @like): Priority @find
+}
