@@ -12,7 +12,7 @@ class EpicObserver
     public function created(Epic $epic): void
     {
         $project = $epic->project;
-        $last_identifier = $project->identifiers()->latest()->first();
+        $last_identifier = $project->identifiers()->orderBy('issue_number', 'desc')->first();
 
         $epic->identifier()->create([
             'project_id' => $project->id,

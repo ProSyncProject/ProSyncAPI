@@ -12,7 +12,7 @@ class IssueObserver
     public function created(Issue $issue): void
     {
         $project = $issue->project;
-        $last_identifier = $project->identifiers()->latest()->first();
+        $last_identifier = $project->identifiers()->orderBy('issue_number', 'desc')->first();
 
         $issue->identifier()->create([
             'project_id' => $project->id,

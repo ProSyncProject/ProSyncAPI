@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\SprintObserver;
+use App\Traits\HasIdentifier;
 use App\Traits\HasUniqueId;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([SprintObserver::class])]
 class Sprint extends Model
 {
-    use SoftDeletes, HasUniqueId, HasFactory;
+    use SoftDeletes, HasUniqueId, HasFactory, HasIdentifier;
 
     protected $fillable = [
         'unique_id',
@@ -54,15 +55,5 @@ class Sprint extends Model
         return $this->belongsToMany(Issue::class)
             ->using(IssueSprint::class)
             ->withTimestamps();
-    }
-
-    /**
-     * Get the identifier for the sprint.
-     *
-     * @return MorphOne
-     */
-    public function identifier(): MorphOne
-    {
-        return $this->morphOne(Identifier::class, 'identifiable');
     }
 }
