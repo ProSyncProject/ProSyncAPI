@@ -2,12 +2,9 @@ type Epic {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
     name: String!
+    issue_number: Int!
     description: String
     project_id: Int!
-    start_date: String
-    end_date: String
-    status: Status!
-    parent_id: Int
     deleted_at: String
     created_at: String!
     updated_at: String!

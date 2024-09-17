@@ -1,10 +1,10 @@
-type Issue {
+type SubIssue {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
     issue_number: Int!
     name: String!
     description: String
-    project_id: Int!
+    issue_id: Int!
     type_id: Int!
     status_id: Int!
     priority_id: Int!
@@ -15,7 +15,7 @@ type Issue {
     created_at: String!
     updated_at: String!
 
-    project: Project @belongsTo
+    issue: Issue @belongsTo
     type: IssueType @belongsTo(relation: "type_id")
     status: IssueStatus @belongsTo(relation: "status_id")
     priority: Priority @belongsTo
@@ -25,31 +25,34 @@ type Issue {
 }
 
 extend type Query {
-    allIssues: [Issue!]! @all
-    paginatedIssues(page: Int! @eq): [Issue!]! @paginate
-    getIssueByUniqueId(unique_id: String! @like): Issue @find
-    getIssueByName(name: String! @like): Issue @find
+    allSubIssues: [SubIssue!]! @all
+    paginatedSubIssues(page: Int! @eq): [SubIssue!]! @paginate
+    getSubIssueByUniqueId(unique_id: String! @like): SubIssue @find
+    getSubIssueByName(name: String! @like): SubIssue @find
 }
 
 extend type Mutation {
-    createIssue(
+    createSubIssue(
         name: String!
         description: String
+        issue_id: Int!
         issue_type_id: Int!
         issue_status_id: Int!
         priority_id: Int!
         epic_id: Int
-    ): Issue @create
+    ): SubIssue @create
 
-    updateIssue(
+    updateSubIssue(
         unique_id: String!
         name: String
         description: String
+        issue_id: Int
         issue_type_id: Int
         issue_status_id: Int
         priority_id: Int
         epic_id: Int
-    ): Issue @update
+    ): SubIssue @update
 
-    deleteIssue(unique_id: String!): Boolean @delete(model: "Issue")
+    deleteSubIssue(unique_id: String!): Boolean @delete(model: "SubIssue")
 }
+
