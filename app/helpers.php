@@ -35,6 +35,6 @@ if (!function_exists('nanoId')) {
      */
     function nanoId(): string
     {
-        return (new \Hidehalo\Nanoid\Client())->generateId();
+        return (new \Hidehalo\Nanoid\Client())->formattedId('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 13);
     }
 }
