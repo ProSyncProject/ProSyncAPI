@@ -1,7 +1,6 @@
 type Issue {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
-    issue_number: Int!
     name: String!
     description: String
     project_id: Int!
@@ -37,8 +36,8 @@ extend type Mutation {
     createIssue(
         name: String!
         description: String
-        issue_type_id: Int!
-        issue_status_id: Int!
+        type_id: Int!
+        status_id: Int!
         priority_id: Int!
         epic_id: Int
     ): Issue @create
@@ -47,8 +46,8 @@ extend type Mutation {
         unique_id: String!
         name: String
         description: String
-        issue_type_id: Int
-        issue_status_id: Int
+        type_id: Int
+        status_id: Int
         priority_id: Int
         epic_id: Int
     ): Issue @update
