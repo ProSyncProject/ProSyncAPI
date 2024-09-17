@@ -17,6 +17,7 @@ type Project {
     users: [User!]! @belongsToMany
     children: [Project!]! @hasMany
     parent: Project @belongsTo
+    epics: [Epic!]! @hasMany
 }
 
 extend type Query {

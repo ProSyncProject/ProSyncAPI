@@ -1,0 +1,23 @@
+type Epic {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    project_id: Int!
+    start_date: String
+    end_date: String
+    status: Status!
+    parent_id: Int
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    project: Project @belongsTo
+}
+
+extend type Query {
+    allEpics: [Epic!]! @all
+    paginatedEpics(page: Int! @eq): [Epic!]! @paginate
+    getEpicByUniqueId(unique_id: String! @like): Epic @find
+    getEpicByName(name: String! @like): Epic @find
+}
