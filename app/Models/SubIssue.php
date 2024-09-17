@@ -15,6 +15,7 @@ class SubIssue extends Model
     protected $fillable = [
         'unique_id',
         'issue_id',
+        'issue_number',
         'name',
         'description',
         'issue_type_id',

@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Epic extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name', 'description'];
+
+    protected $fillable = ['name', 'description', 'issue_number', 'unique_id', 'project_id'];
 
     /**
      * The project that the epic belongs to
