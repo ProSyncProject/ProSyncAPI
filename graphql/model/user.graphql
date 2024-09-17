@@ -15,6 +15,8 @@ type User {
     updated_at: String!
 
     projects: [Project!]! @belongsToMany
+    issues: [Issue!]! @hasMany(relation: "assignee_id")
+    createdIssues: [Issue!]! @hasMany(relation: "reporter_id")
 }
 
 extend type Query {
@@ -23,4 +25,27 @@ extend type Query {
     getUserByUniqueId(unique_id: String! @like): User @find
     getUserByEmail(email: String! @like): User @find
     getUserByUsername(username: String! @like): User @find
+}
+
+extend type Mutation {
+    createUser(
+        first_name: String!
+        middle_name: String
+        last_name: String!
+        username: String!
+        email: String!
+        password: String!
+    ): User @create
+
+    updateUser(
+        unique_id: String!
+        first_name: String
+        middle_name: String
+        last_name: String
+        username: String
+        email: String
+        password: String
+    ): User @update
+
+    deleteUser(unique_id: String!): Boolean @delete(model: "User")
 }

@@ -1,0 +1,41 @@
+type Priority {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    level: Int
+    color: String
+    icon: String
+    project_id: Int
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    issues: [Issue!]! @hasMany
+    projects: [Project!]! @belongsToMany
+}
+
+extend type Query {
+    allPriorities: [Priority!]! @all
+    paginatedPriorities(page: Int! @eq): [Priority!]! @paginate
+    getPriorityByUniqueId(unique_id: String! @like): Priority @find
+    getPriorityByName(name: String! @like): Priority @find
+}
+
+extend type Mutation {
+    createPriority(
+        name: String!
+        level: Int
+        color: String
+        icon: String
+    ): Priority @create
+
+    updatePriority(
+        unique_id: String!
+        name: String
+        level: Int
+        color: String
+        icon: String
+    ): Priority @update
+
+    deletePriority(unique_id: String!): Boolean @delete(model: "Priority")
+}

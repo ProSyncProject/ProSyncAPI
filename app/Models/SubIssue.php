@@ -3,18 +3,25 @@
 namespace App\Models;
 
 use AchyutN\LaravelComment\Traits\HasComment;
+use App\Observers\SubIssueObserver;
+use App\Traits\HasIdentifier;
+use App\Traits\HasUniqueId;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([SubIssueObserver::class])]
 class SubIssue extends Model
 {
-    use SoftDeletes, HasComment;
+    use SoftDeletes, HasComment, HasUniqueId, HasFactory, HasIdentifier;
 
     protected $fillable = [
         'unique_id',
         'issue_id',
+        'issue_number',
         'name',
         'description',
         'issue_type_id',
@@ -34,6 +41,16 @@ class SubIssue extends Model
     public function issue(): BelongsTo
     {
         return $this->belongsTo(Issue::class);
+    }
+
+    /**
+     * Get the project that owns the Issue that owns the SubIssue
+     *
+     * @return BelongsTo
+     */
+    public function project(): BelongsTo
+    {
+        return $this->issue->project();
     }
 
     /**

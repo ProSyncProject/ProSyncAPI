@@ -1,0 +1,33 @@
+type IssueStatus {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    issues: [Issue!]! @hasMany
+}
+
+extend type Query {
+    allIssueStatuses: [IssueStatus!]! @all
+    paginatedIssueStatuses(page: Int! @eq): [IssueStatus!]! @paginate
+    getIssueStatusByUniqueId(unique_id: String! @like): IssueStatus @find
+    getIssueStatusByName(name: String! @like): IssueStatus @find
+}
+
+extend type Mutation {
+    createIssueStatus(
+        name: String!
+        description: String
+    ): IssueStatus @create
+
+    updateIssueStatus(
+        unique_id: String!
+        name: String
+        description: String
+    ): IssueStatus @update
+
+    deleteIssueStatus(unique_id: String!): Boolean @delete(model: "IssueStatus")
+}

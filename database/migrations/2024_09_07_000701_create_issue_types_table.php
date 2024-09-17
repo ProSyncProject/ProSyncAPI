@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('issue_types', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id')->unique();
             $table->string('name');
             $table->string('icon')->nullable();
+            $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

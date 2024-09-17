@@ -1,0 +1,45 @@
+type Sprint {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    issue_number: String!
+    name: String!
+    goal: String
+    description: String
+    project_id: Int!
+    start_date: String!
+    end_date: String!
+    completed_at: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    project: Project @belongsTo
+    issues: [Issue!]! @belongsToMany
+    identifier: Identifier @morphOne(relation: "identifiable")
+}
+
+extend type Query {
+    allSprints: [Sprint!]! @all
+    paginatedSprints(page: Int! @eq): [Sprint!]! @paginate
+    getSprintByUniqueId(unique_id: String! @like): Sprint @find
+    getSprintByName(name: String! @like): Sprint @find
+}
+
+extend type Mutation {
+    createSprint(
+        name: String!
+        description: String
+        start_date: String!
+        end_date: String!
+    ): Sprint @create
+
+    updateSprint(
+        unique_id: String!
+        name: String
+        description: String
+        start_date: String
+        end_date: String
+    ): Sprint @update
+
+    deleteSprint(unique_id: String!): Boolean @delete(model: "Sprint")
+}

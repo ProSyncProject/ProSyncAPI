@@ -1,0 +1,60 @@
+type SubIssue {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    issue_number: String!
+    name: String!
+    description: String
+    issue_id: Int!
+    type_id: Int!
+    status_id: Int!
+    priority_id: Int!
+    epic_id: Int
+    assignee_id: Int
+    reporter_id: Int
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    issue: Issue @belongsTo
+    type: IssueType @belongsTo(relation: "type_id")
+    status: IssueStatus @belongsTo(relation: "status_id")
+    priority: Priority @belongsTo
+    epic: Epic @belongsTo
+    assignee: User @belongsTo(relation: "assignee_id")
+    reporter: User @belongsTo(relation: "reporter_id")
+    comments: [Comment!]! @morphMany(relation: "commentable")
+    identifier: Identifier @morphOne(relation: "identifiable")
+}
+
+extend type Query {
+    allSubIssues: [SubIssue!]! @all
+    paginatedSubIssues(page: Int! @eq): [SubIssue!]! @paginate
+    getSubIssueByUniqueId(unique_id: String! @like): SubIssue @find
+    getSubIssueByName(name: String! @like): SubIssue @find
+}
+
+extend type Mutation {
+    createSubIssue(
+        name: String!
+        description: String
+        issue_id: Int!
+        type_id: Int!
+        status_id: Int!
+        priority_id: Int!
+        epic_id: Int
+    ): SubIssue @create
+
+    updateSubIssue(
+        unique_id: String!
+        name: String
+        description: String
+        issue_id: Int
+        type_id: Int
+        status_id: Int
+        priority_id: Int
+        epic_id: Int
+    ): SubIssue @update
+
+    deleteSubIssue(unique_id: String!): Boolean @delete(model: "SubIssue")
+}
+

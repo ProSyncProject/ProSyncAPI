@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasUniqueId;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProjectUser extends Pivot
 {
-    use SoftDeletes;
+    use SoftDeletes, HasUniqueId;
 
     protected $fillable = ['role'];
 

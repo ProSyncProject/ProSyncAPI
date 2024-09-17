@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('issue_sprint', function (Blueprint $table) {
+        Schema::create('identifiers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Issue::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Sprint::class)->constrained()->cascadeOnDelete();
-            $table->unique(['issue_id', 'sprint_id']);
+            $table->string('unique_id')->unique();
+            $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
+            $table->morphs('identifiable');
+            $table->integer('issue_number');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('issue_sprint');
+        Schema::dropIfExists('identifiers');
     }
 };

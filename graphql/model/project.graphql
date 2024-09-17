@@ -4,7 +4,6 @@ type Project {
     name: String!
     description: String
     prefix: String
-    owner_id: Int!
     start_date: String
     end_date: String
     status: Status!
@@ -15,8 +14,14 @@ type Project {
     updated_at: String!
 
     users: [User!]! @belongsToMany
+    priorities: [Priority!]! @hasMany
     children: [Project!]! @hasMany
     parent: Project @belongsTo
+    epics: [Epic!]! @hasMany
+    comments: [Comment!]! @morphMany(relation: "commentable")
+    identifiers: [Identifier!]! @hasMany(relation: "identifiers")
+    issues: [Issue!]! @hasMany
+    subIssues: [SubIssue!]! @hasManyThrough
 }
 
 extend type Query {
@@ -25,4 +30,33 @@ extend type Query {
     getProjectByUniqueId(unique_id: String! @like): Project @find
     getProjectByName(name: String! @like): Project @find
     getProjectByPrefix(prefix: String! @like): Project @find
+}
+
+extend type Mutation {
+    createProject(
+        name: String!
+        description: String
+        prefix: String
+        owner_id: Int!
+        start_date: String
+        end_date: String
+        status: Status!
+        parent_id: Int
+        privacy: Privacy!
+    ): Project @create
+
+    updateProject(
+        unique_id: String!
+        name: String
+        description: String
+        prefix: String
+        owner_id: Int
+        start_date: String
+        end_date: String
+        status: Status
+        parent_id: Int
+        privacy: Privacy
+    ): Project @update
+
+    deleteProject(unique_id: String!): Boolean @delete(model: "Project")
 }

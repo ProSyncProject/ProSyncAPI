@@ -2,5 +2,9 @@ type Query {
     currentUser: User @auth
 }
 
+type Mutation {
+    logout: Boolean @auth
+}
+
 #import enum.graphql
 #import model/*.graphql

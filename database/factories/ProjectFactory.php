@@ -17,16 +17,18 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
+        $prefix = '';
+        for ($i = 0; $i < $this->faker->randomElement([2,3]); $i++) {
+            $prefix .= $this->faker->randomLetter;
+        }
         return [
-            'unique_id' => $this->faker->unique()->uuid,
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'prefix' => $this->faker->word,
-            'owner_id' => $this->faker->randomElement([User::factory(), User::get()->random()->id]),
+            'prefix' => strtoupper($prefix),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['active', 'inactive']),
-            'parent_id' => $this->faker->randomElement([null, \App\Models\Project::factory(), \App\Models\Project::get()->random()->id]),
+            'parent_id' => $this->faker->randomElement([null, \App\Models\Project::factory(), \App\Models\Project::count() > 0 ? \App\Models\Project::get()->random()->id : null]),
             'privacy' => $this->faker->randomElement(['public', 'private']),
         ];
     }
