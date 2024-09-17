@@ -1,0 +1,56 @@
+type Message {
+    id: ID!
+    unique_id: String!
+    channel_id: Int!
+    user_id: Int!
+    parent_id: Int
+    content: String!
+    forwarded: Boolean!
+    is_pinned: Boolean!
+    is_saved: Boolean!
+    is_seen: Boolean!
+    pinned_at: String
+    deleted_at: String
+    created_at: String
+    updated_at: String
+
+    channel: Channel @belongsTo
+    user: User @belongsTo
+    replies: [Message!]! @hasMany(relation: "parent_id")
+    seenLogs: [MessageSeen!]! @morphMany(relation: "seenLogs")
+    saves: [MessageSave!]! @morphMany(relation: "saves")
+}
+
+extend type Query {
+    allMessages: [Message!]! @all
+    paginatedMessages(page: Int! @eq): [Message!]! @paginate
+    getMessageByUniqueId(unique_id: String! @eq): Message @find
+    getMessageByContent(content: String! @like): Message @find
+}
+
+extend type Mutation {
+    createMessage(
+        channel_id: Int!
+        user_id: Int!
+        parent_id: Int
+        content: String!
+        forwarded: Boolean!
+        is_pinned: Boolean!
+        is_saved: Boolean!
+        is_seen: Boolean!
+    ): Message @create
+
+    updateMessage(
+        unique_id: String!
+        channel_id: Int
+        user_id: Int
+        parent_id: Int
+        content: String
+        forwarded: Boolean
+        is_pinned: Boolean
+        is_saved: Boolean
+        is_seen: Boolean
+    ): Message @update
+
+    deleteMessage(unique_id: String!): Boolean @delete(model: "Message")
+}

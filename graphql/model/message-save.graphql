@@ -1,0 +1,31 @@
+type MessageSave {
+    id: ID!
+    message_id: Int!
+    user_id: Int!
+    created_at: String
+    updated_at: String
+
+    message: Message @belongsTo
+    user: User @belongsTo
+}
+
+extend type Query {
+    allMessageSaves: [MessageSave!]! @all
+    paginatedMessageSaves(page: Int! @eq): [MessageSave!]! @paginate
+    getMessageSaveByMessageId(message_id: Int! @eq): MessageSave @find
+    getMessageSaveByUserId(user_id: Int! @eq): MessageSave @find
+}
+
+extend type Mutation {
+    createMessageSave(
+        message_id: Int!
+        user_id: Int!
+    ): MessageSave @create
+
+    updateMessageSave(
+        message_id: Int!
+        user_id: Int!
+    ): MessageSave @update
+
+    deleteMessageSave(message_id: Int!, user_id: Int!): Boolean @delete(model: "MessageSave")
+}

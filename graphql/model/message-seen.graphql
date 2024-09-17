@@ -1,0 +1,31 @@
+type MessageSeen {
+    id: ID!
+    message_id: Int!
+    user_id: Int!
+    created_at: String
+    updated_at: String
+
+    message: Message @belongsTo
+    user: User @belongsTo
+}
+
+extend type Query {
+    allMessageSeens: [MessageSeen!]! @all
+    paginatedMessageSeens(page: Int! @eq): [MessageSeen!]! @paginate
+    getMessageSeenByMessageId(message_id: Int! @eq): MessageSeen @find
+    getMessageSeenByUserId(user_id: Int! @eq): MessageSeen @find
+}
+
+extend type Mutation {
+    createMessageSeen(
+        message_id: Int!
+        user_id: Int!
+    ): MessageSeen @create
+
+    updateMessageSeen(
+        message_id: Int!
+        user_id: Int!
+    ): MessageSeen @update
+
+    deleteMessageSeen(message_id: Int!, user_id: Int!): Boolean @delete(model: "MessageSeen")
+}
