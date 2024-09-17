@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('issue_sprint', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Issue::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Sprint::class)->constrained()->cascadeOnDelete();
+            $table->unique(['issue_id', 'sprint_id']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

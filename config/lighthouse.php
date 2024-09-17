@@ -159,7 +159,7 @@ return [
     */
 
     'namespaces' => [
-        'models' => ['App', 'App\\Models', 'AchyutN\\LaravelComment\\Models'],
+        'models' => ['App', 'App\\Models'],
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
         'subscriptions' => 'App\\GraphQL\\Subscriptions',

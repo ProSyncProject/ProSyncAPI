@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('issue_statuses', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id')->unique();
             $table->string('name');
             $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
             $table->boolean('is_resolved')->default(false);

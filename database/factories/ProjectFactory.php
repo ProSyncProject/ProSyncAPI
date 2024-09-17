@@ -18,7 +18,6 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'unique_id' => $this->faker->unique()->uuid,
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'prefix' => $this->faker->word,

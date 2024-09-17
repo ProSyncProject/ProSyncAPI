@@ -26,3 +26,15 @@ METHOD: $method";
 '));
     }
 }
+
+if (!function_exists('nanoId')) {
+    /**
+     * Generate a unique id.
+     *
+     * @return string
+     */
+    function nanoId(): string
+    {
+        return (new \Hidehalo\Nanoid\Client())->generateId();
+    }
+}

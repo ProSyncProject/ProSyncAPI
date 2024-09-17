@@ -1,22 +1,15 @@
 <?php
 
-namespace AchyutN\LaravelComment\Factories;
+namespace Database\Factories;
 
-use AchyutN\LaravelComment\Models\Comment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
  */
 class CommentFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
-    protected $model = Comment::class;
-
     /**
      * Define the model's default state.
      *
@@ -25,30 +18,10 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'commenter_type' => config('comment.commenter_model'),
-            'commenter_id' => (config('comment.commenter_model'))::all()->random()->id,
-            'content' => $this->faker->text,
-            'approved_at' => null,
+            'commentable_type' => 'App\Models\Issue',
+            'commentable_id' => 1,
+            'user_id' => User::factory(),
+            'comment' => $this->faker->sentence,
         ];
-    }
-
-    /**
-     * Indicate that the model's comment has been approved.
-     */
-    public function approved(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'approved_at' => now(),
-        ]);
-    }
-
-    /**
-     * Indicate that the model's comment are pending.
-     */
-    public function pending(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'pending' => true,
-        ]);
     }
 }

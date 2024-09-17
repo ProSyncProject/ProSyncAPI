@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Hidehalo\Nanoid\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -32,7 +31,6 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'unique_id' => (new Client())->generateId(),
             'remember_token' => Str::random(10),
         ];
     }
