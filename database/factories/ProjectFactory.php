@@ -22,11 +22,10 @@ class ProjectFactory extends Factory
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'prefix' => $this->faker->word,
-            'owner_id' => $this->faker->randomElement([User::factory(), User::get()->random()->id]),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['active', 'inactive']),
-            'parent_id' => $this->faker->randomElement([null, \App\Models\Project::factory(), \App\Models\Project::get()->random()->id]),
+            'parent_id' => $this->faker->randomElement([null, \App\Models\Project::factory(), \App\Models\Project::count() > 0 ? \App\Models\Project::get()->random()->id : null]),
             'privacy' => $this->faker->randomElement(['public', 'private']),
         ];
     }

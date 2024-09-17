@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use AchyutN\LaravelComment\Models\Comment;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,5 +15,16 @@ class ProjectSeeder extends Seeder
     public function run(): void
     {
         Project::factory()->count(10)->create();
+
+        $projects = Project::all();
+
+        $projects->each(function ($project) {
+            $uuid = uuid_create(4);
+            Comment::factory()->count(5)->create([
+                'unique_id' => $uuid,
+                'commentable_id' => $project->id,
+                'commentable_type' => Project::class,
+            ]);
+        });
     }
 }
