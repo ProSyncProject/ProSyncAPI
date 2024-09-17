@@ -1,7 +1,6 @@
 type SubIssue {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
-    issue_number: Int!
     name: String!
     description: String
     issue_id: Int!
@@ -38,8 +37,8 @@ extend type Mutation {
         name: String!
         description: String
         issue_id: Int!
-        issue_type_id: Int!
-        issue_status_id: Int!
+        type_id: Int!
+        status_id: Int!
         priority_id: Int!
         epic_id: Int
     ): SubIssue @create
@@ -49,8 +48,8 @@ extend type Mutation {
         name: String
         description: String
         issue_id: Int
-        issue_type_id: Int
-        issue_status_id: Int
+        type_id: Int
+        status_id: Int
         priority_id: Int
         epic_id: Int
     ): SubIssue @update

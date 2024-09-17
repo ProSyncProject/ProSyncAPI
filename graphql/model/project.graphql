@@ -4,7 +4,6 @@ type Project {
     name: String!
     description: String
     prefix: String
-    owner_id: Int!
     start_date: String
     end_date: String
     status: Status!
