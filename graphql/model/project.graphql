@@ -14,11 +14,14 @@ type Project {
     updated_at: String!
 
     users: [User!]! @belongsToMany
+    priorities: [Priority!]! @hasMany
     children: [Project!]! @hasMany
     parent: Project @belongsTo
     epics: [Epic!]! @hasMany
     comments: [Comment!]! @morphMany(relation: "commentable")
     identifiers: [Identifier!]! @hasMany(relation: "identifiers")
+    issues: [Issue!]! @hasMany
+    subIssues: [SubIssue!]! @hasManyThrough
 }
 
 extend type Query {

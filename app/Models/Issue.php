@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([IssueObserver::class])]
 class Issue extends Model
 {
-    use SoftDeletes, HasComment, HasUniqueId;
+    use SoftDeletes, HasComment, HasUniqueId, HasFactory;
 
     protected $fillable = [
         'unique_id',

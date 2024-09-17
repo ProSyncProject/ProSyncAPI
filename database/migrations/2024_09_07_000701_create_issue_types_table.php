@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('unique_id')->unique();
             $table->string('name');
             $table->string('icon')->nullable();
+            $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

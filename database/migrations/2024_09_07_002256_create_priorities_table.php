@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('level');
             $table->string('color');
             $table->string('icon')->nullable();
+            $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
