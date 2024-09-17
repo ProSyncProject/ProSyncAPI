@@ -1,0 +1,28 @@
+type Issue {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    issue_type_id: Int!
+    issue_status_id: Int!
+    priority_id: Int!
+    epic_id: Int
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    project: Project @belongsTo
+    type: IssueType @belongsTo
+    status: IssueStatus @belongsTo
+    priority: Priority @belongsTo
+    epic: Epic @belongsTo
+    assignee: User @belongsTo(relation: "assignee_id")
+    reporter: User @belongsTo(relation: "reporter_id")
+}
+
+extend type Query {
+    allIssues: [Issue!]! @all
+    paginatedIssues(page: Int! @eq): [Issue!]! @paginate
+    getIssueByUniqueId(unique_id: String! @like): Issue @find
+    getIssueByName(name: String! @like): Issue @find
+}

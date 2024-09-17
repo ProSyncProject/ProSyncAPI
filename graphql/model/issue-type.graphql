@@ -1,0 +1,18 @@
+type IssueType {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    name: String!
+    description: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    issues: [Issue!]! @hasMany
+}
+
+extend type Query {
+    allIssueTypes: [IssueType!]! @all
+    paginatedIssueTypes(page: Int! @eq): [IssueType!]! @paginate
+    getIssueTypeByUniqueId(unique_id: String! @like): IssueType @find
+    getIssueTypeByName(name: String! @like): IssueType @find
+}
