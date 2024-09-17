@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create(config("comment.table_name"), function (Blueprint $table) {
             $table->id();
+            $table->string('unique_id')->unique();
             $table->morphs('commentable');
             $table->morphs('commenter');
             $table->text('content');

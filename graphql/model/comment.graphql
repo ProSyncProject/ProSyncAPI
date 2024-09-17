@@ -1,0 +1,40 @@
+union Commentable = Issue | Project
+union Commenter = User
+
+type Comment {
+    id: Int! @hide(env: ["production", "local"])
+    unique_id: String!
+    content: String!
+    approved_at: String
+    deleted_at: String
+    created_at: String!
+    updated_at: String!
+
+    commentable: Commentable @morphTo
+    commenter: Commenter @morphTo
+}
+
+extend type Query {
+    allComments: [Comment!]! @all
+    paginatedComments(page: Int! @eq): [Comment!]! @paginate(model: "Comment")
+    getCommentByUniqueId(unique_id: String! @like): Comment @find
+}
+
+extend type Mutation {
+    createComment(
+        content: String!
+        commentable_id: Int!
+        commentable_type: String!
+        commenter_id: Int!
+        commenter_type: String!
+    ): Comment @create
+
+    updateComment(
+        unique_id: String!
+        content: String
+        approved_at: String
+        deleted_at: String
+    ): Comment @update
+
+    deleteComment(unique_id: String!): Boolean @delete(model: "Comment")
+}
