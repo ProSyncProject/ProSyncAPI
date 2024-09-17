@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use AchyutN\LaravelComment\Traits\CanComment;
+use App\Traits\HasUniqueId;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanComment;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanComment, HasUniqueId;
 
     /**
      * The attributes that are guarded against mass assignment.

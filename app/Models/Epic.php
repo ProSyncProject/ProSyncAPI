@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\EpicObserver;
+use App\Traits\HasUniqueId;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([EpicObserver::class])]
 class Epic extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasUniqueId;
 
     protected $fillable = ['name', 'description', 'issue_number', 'unique_id', 'project_id'];
 

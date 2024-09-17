@@ -19,9 +19,8 @@ class ProjectSeeder extends Seeder
         $projects = Project::all();
 
         $projects->each(function ($project) {
-            $uuid = uuid_create(4);
             Comment::factory()->count(5)->create([
-                'unique_id' => $uuid,
+                'unique_id' => nanoId(),
                 'commentable_id' => $project->id,
                 'commentable_type' => Project::class,
             ]);
