@@ -21,3 +21,28 @@ extend type Query {
     getEpicByUniqueId(unique_id: String! @like): Epic @find
     getEpicByName(name: String! @like): Epic @find
 }
+
+extend type Mutation {
+    createEpic(
+        name: String!
+        description: String
+        project_id: Int!
+        start_date: String
+        end_date: String
+        status: Status!
+        parent_id: Int
+    ): Epic @create
+
+    updateEpic(
+        unique_id: String!
+        name: String
+        description: String
+        project_id: Int
+        start_date: String
+        end_date: String
+        status: Status
+        parent_id: Int
+    ): Epic @update
+
+    deleteEpic(unique_id: String!): Boolean @delete(model: "Epic")
+}

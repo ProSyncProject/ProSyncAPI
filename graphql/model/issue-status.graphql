@@ -16,3 +16,18 @@ extend type Query {
     getIssueStatusByUniqueId(unique_id: String! @like): IssueStatus @find
     getIssueStatusByName(name: String! @like): IssueStatus @find
 }
+
+extend type Mutation {
+    createIssueStatus(
+        name: String!
+        description: String
+    ): IssueStatus @create
+
+    updateIssueStatus(
+        unique_id: String!
+        name: String
+        description: String
+    ): IssueStatus @update
+
+    deleteIssueStatus(unique_id: String!): Boolean @delete(model: "IssueStatus")
+}

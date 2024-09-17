@@ -16,3 +16,18 @@ extend type Query {
     getPriorityByUniqueId(unique_id: String! @like): Priority @find
     getPriorityByName(name: String! @like): Priority @find
 }
+
+extend type Mutation {
+    createPriority(
+        name: String!
+        description: String
+    ): Priority @create
+
+    updatePriority(
+        unique_id: String!
+        name: String
+        description: String
+    ): Priority @update
+
+    deletePriority(unique_id: String!): Boolean @delete(model: "Priority")
+}
