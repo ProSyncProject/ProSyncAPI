@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Issue extends Model
@@ -129,5 +130,15 @@ class Issue extends Model
     public function subIssues(): HasMany
     {
         return $this->hasMany(SubIssue::class);
+    }
+
+    /**
+     * Get the identifier for the issue.
+     *
+     * @return MorphOne
+     */
+    public function identifier(): MorphOne
+    {
+        return $this->morphOne(Identifier::class, 'identifiable');
     }
 }

@@ -15,6 +15,7 @@ type Sprint {
 
     project: Project @belongsTo
     issues: [Issue!]! @belongsToMany
+    identifier: Identifier @morphOne(relation: "identifiable")
 }
 
 extend type Query {

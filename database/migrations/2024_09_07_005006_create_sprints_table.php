@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sprints', function (Blueprint $table) {
             $table->id();
             $table->string('unique_id')->unique();
-            $table->integer('issue_number');
             $table->string('name');
             $table->text('goal')->nullable();
             $table->text('description')->nullable();

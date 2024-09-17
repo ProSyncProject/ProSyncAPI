@@ -18,6 +18,8 @@ type Project {
     children: [Project!]! @hasMany
     parent: Project @belongsTo
     epics: [Epic!]! @hasMany
+    comments: [Comment!]! @morphMany(relation: "commentable")
+    identifiers: [Identifier!]! @hasMany(relation: "identifiers")
 }
 
 extend type Query {

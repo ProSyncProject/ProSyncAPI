@@ -10,6 +10,7 @@ type Epic {
     updated_at: String!
 
     project: Project @belongsTo
+    identifier: Identifier @morphOne(relation: "identifiable")
 }
 
 extend type Query {

@@ -22,6 +22,8 @@ type Issue {
     epic: Epic @belongsTo
     assignee: User @belongsTo(relation: "assignee_id")
     reporter: User @belongsTo(relation: "reporter_id")
+    comments: [Comment!]! @morphMany(relation: "commentable")
+    identifier: Identifier @morphOne(relation: "identifiable")
 }
 
 extend type Query {
