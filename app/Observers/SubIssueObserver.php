@@ -13,7 +13,7 @@ class SubIssueObserver
     public function created(SubIssue $subIssue): void
     {
         $project = $subIssue->project;
-        $last_identifier = $project->identifiers()->latest()->first();
+        $last_identifier = $project->identifiers()->orderBy('issue_number', 'desc')->first();
 
         $subIssue->identifier()->create([
             'project_id' => $project->id,

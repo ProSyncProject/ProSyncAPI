@@ -4,6 +4,7 @@ namespace App\Models;
 
 use AchyutN\LaravelComment\Traits\HasComment;
 use App\Observers\SubIssueObserver;
+use App\Traits\HasIdentifier;
 use App\Traits\HasUniqueId;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([SubIssueObserver::class])]
 class SubIssue extends Model
 {
-    use SoftDeletes, HasComment, HasUniqueId, HasFactory;
+    use SoftDeletes, HasComment, HasUniqueId, HasFactory, HasIdentifier;
 
     protected $fillable = [
         'unique_id',
@@ -90,15 +91,5 @@ class SubIssue extends Model
     public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reporter_id');
-    }
-
-    /**
-     * Get the identifier for the sub-issue.
-     *
-     * @return MorphOne
-     */
-    public function identifier(): MorphOne
-    {
-        return $this->morphOne(Identifier::class, 'identifiable');
     }
 }

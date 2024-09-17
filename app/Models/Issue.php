@@ -4,6 +4,7 @@ namespace App\Models;
 
 use AchyutN\LaravelComment\Traits\HasComment;
 use App\Observers\IssueObserver;
+use App\Traits\HasIdentifier;
 use App\Traits\HasUniqueId;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([IssueObserver::class])]
 class Issue extends Model
 {
-    use SoftDeletes, HasComment, HasUniqueId, HasFactory;
+    use SoftDeletes, HasComment, HasUniqueId, HasFactory, HasIdentifier;
 
     protected $fillable = [
         'unique_id',
@@ -134,15 +135,5 @@ class Issue extends Model
     public function subIssues(): HasMany
     {
         return $this->hasMany(SubIssue::class);
-    }
-
-    /**
-     * Get the identifier for the issue.
-     *
-     * @return MorphOne
-     */
-    public function identifier(): MorphOne
-    {
-        return $this->morphOne(Identifier::class, 'identifiable');
     }
 }

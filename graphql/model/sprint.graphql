@@ -1,6 +1,7 @@
 type Sprint {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
+    issue_number: String!
     name: String!
     goal: String
     description: String

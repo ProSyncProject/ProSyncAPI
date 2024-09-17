@@ -1,6 +1,7 @@
 type SubIssue {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
+    issue_number: String!
     name: String!
     description: String
     issue_id: Int!

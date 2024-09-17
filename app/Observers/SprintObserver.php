@@ -12,7 +12,7 @@ class SprintObserver
     public function created(Sprint $sprint): void
     {
         $project = $sprint->project;
-        $last_identifier = $project->identifiers()->latest()->first();
+        $last_identifier = $project->identifiers()->orderBy('issue_number', 'desc')->first();
 
         $sprint->identifier()->create([
             'project_id' => $project->id,
