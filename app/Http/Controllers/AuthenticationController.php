@@ -31,7 +31,7 @@ class AuthenticationController extends Controller
             $login = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             $user = User::where($login, $request->login)->firstOrFail();
             if (!$user || !password_verify($request->password, $user->password)) {
-                return Response::error("Invalid credentials.", 403);
+                return Response::validate("password", "Invalid credentials.", 422);
             }
             $token = $user->createToken("auth_token")->plainTextToken;
             $user->token = $token;
@@ -47,7 +47,7 @@ class AuthenticationController extends Controller
      *
      * @param ForgotPasswordRequest $request
      * @return JsonResponse
-     * @response array{"status": 200, "message": "Email sent successfully."}
+     * @response array{"status": 200, "message": "Email sent successfully.", "data": array{"login": "achyut", "success": true}}
      * @unauthenticated
      */
     public function forgotPassword(ForgotPasswordRequest $request)
@@ -70,7 +70,11 @@ class AuthenticationController extends Controller
         } catch (\Exception $exception) {
             return Response::error($exception);
         }
-        return Response::success(null, "Email sent successfully.");
+        $response = [
+            'login' => $request->login,
+            'success' => true
+        ];
+        return Response::success($response, "Email sent successfully.");
     }
 
     /**
@@ -78,7 +82,7 @@ class AuthenticationController extends Controller
      *
      * @param ResetPasswordRequest $request
      * @return JsonResponse
-     * @response array{"status": 200, "message": "Password reset successfully."}
+     * @response array{"status": 200, "message": "Password reset successfully.", "data": array{"login": "achyut", "success": true}}
      * @response array{"status": 404, "message": "Invalid OTP."}
      * @unauthenticated
      */
@@ -89,10 +93,13 @@ class AuthenticationController extends Controller
             $user = User::where($login, $request->login)->firstOrFail();
             $otp = $user->otpCodes()->where('otp', $request->otp)->orderBy('created_at', 'desc')->first();
             if (!$otp) {
-                return Response::error("Invalid OTP.", 404);
+                return Response::validate("otp", "Invalid OTP.", 404);
+            }
+            if ($otp->created_at->diffInMinutes(now()) > 5) {
+                return Response::validate("otp", "OTP has expired.", 422);
             }
             if (password_verify($request->password, $user->password)) {
-                return Response::error("New password cannot be the same as the old password.", 422);
+                return Response::validate("password", "New password cannot be the same as the old password.", 422);
             }
             $user->update([
                 'password' => bcrypt($request->password)
@@ -101,7 +108,11 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             return Response::error($e);
         }
-        return Response::success(null, "Password reset successfully.");
+        $response = [
+            'success' => true,
+            'login' => $request->login
+        ];
+        return Response::success($response, "Password reset successfully.");
     }
 
     /**
@@ -112,7 +123,7 @@ class AuthenticationController extends Controller
      */
     public function echo(): JsonResponse
     {
-        return Response::success(true, "Token is valid.");
+        return Response::success(true, null);
     }
 
     /**
@@ -129,7 +140,7 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             return Response::error($e);
         }
-        return Response::success($resource, "User profile fetched successfully.");
+        return Response::success($resource);
     }
 
     /**
@@ -171,10 +182,10 @@ class AuthenticationController extends Controller
             ]);
             $user = $request->user();
             if (!password_verify($request->old_password, $user->password)) {
-                return Response::error("Old password is incorrect.", 422);
+                return Response::validate("old_password", "Old password is incorrect.", 422);
             }
             if (password_verify($request->new_password, $user->password)) {
-                return Response::error("New password cannot be the same as the old password.", 422);
+                return Response::validate("new_password", "New password cannot be the same as the old password.", 422);
             }
             $user->update([
                 'password' => bcrypt($request->new_password)

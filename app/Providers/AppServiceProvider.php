@@ -58,5 +58,15 @@ class AppServiceProvider extends ServiceProvider
                 'data' => null
             ], $status);
         });
+
+        Response::macro('validate', function ($field, $message, $status = 422) {
+            return response()->json([
+                'status' => $status,
+                'message' => $message,
+                'errors' => [
+                    $field => [$message]
+                ]
+            ], $status);
+        });
     }
 }

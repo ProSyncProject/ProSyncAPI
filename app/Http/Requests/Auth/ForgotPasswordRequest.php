@@ -27,7 +27,7 @@ class ForgotPasswordRequest extends FormRequest
              * @example achyut
              * @required
              */
-            'login' => ['required', 'string', 'max:255', 'min:3'],
+            'login' => ['required', 'string', 'max:255', 'min:3', new \App\Rules\LoginRule],
         ];
     }
 
