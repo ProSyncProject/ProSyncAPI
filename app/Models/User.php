@@ -125,4 +125,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(SubIssue::class, 'reporter_id');
     }
+
+
+
+    /**
+     * Get the channels the user is a member of.
+     *
+     * @return BelongsToMany
+     */
+    public function channels(): BelongsToMany
+    {
+        return $this->belongsToMany(Channel::class)
+            ->using(ChannelUser::class)
+            ->withTimestamps()
+            ->withPivot('is_creator');
+    }
 }

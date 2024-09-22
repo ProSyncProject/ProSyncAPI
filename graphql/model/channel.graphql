@@ -1,0 +1,42 @@
+type Channel {
+    id: ID!
+    unique_id: String!
+    name: String!
+    description: String
+    privacy: Privacy!
+    project_id: Int
+    is_seen: Boolean!
+    deleted_at: String
+    created_at: String
+    updated_at: String
+
+    project: Project @belongsTo
+    users: [User!]! @belongsToMany(relation: "channel_user")
+    messages: [Message!]! @morphMany(relation: "messages")
+}
+
+extend type Query {
+    allChannels: [Channel!]! @all
+    paginatedChannels(page: Int! @eq): [Channel!]! @paginate
+    getChannelByUniqueId(unique_id: String! @eq): Channel @find
+    getChannelByName(name: String! @like): Channel @find
+}
+
+extend type Mutation {
+    createChannel(
+        name: String!
+        description: String
+        privacy: Privacy!
+        project_id: Int
+    ): Channel @create
+
+    updateChannel(
+        unique_id: String!
+        name: String
+        description: String
+        privacy: Privacy
+        project_id: Int
+    ): Channel @update
+
+    deleteChannel(unique_id: String!): Boolean @delete(model: "Channel")
+}
