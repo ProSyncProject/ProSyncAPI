@@ -32,16 +32,14 @@ extend type Query @guard {
     getProjectByPrefix(prefix: String! @like): Project @find @canModel(model: "Project", ability: "view")
 }
 
-input CreateProjectInput {
-    name: String @rules(apply: ["required", "max:255"])
-    description: String @rules(apply: ["required"])
-    prefix: String @rules(apply: ["required", "max:5"])
-    start_date: String @rules(apply: ["required", "date:Y-m-d"])
-    end_date: String @rules(apply: ["required", "date:Y-m-d"])
-}
-
 extend type Mutation @guard {
-    createProject(input: CreateProjectInput!): Project @create @guard @canModel(ability: "create", model: "Project")
+    createProject(
+        name: String @rules(apply: ["required", "max:255"])
+        description: String @rules(apply: ["required"])
+        prefix: String @rules(apply: ["required", "max:5"])
+        start_date: String @rules(apply: ["required", "date:Y-m-d"])
+        end_date: String @rules(apply: ["required", "date:Y-m-d"])
+    ): Project @create @guard @canModel(ability: "create", model: "Project")
 
     updateProject(
         unique_id: String!

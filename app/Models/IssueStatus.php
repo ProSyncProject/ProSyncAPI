@@ -13,7 +13,7 @@ class IssueStatus extends Model
 {
     use SoftDeletes, HasUniqueId, HasFactory;
 
-    protected $fillable = ['name', 'is_resolved'];
+    protected $fillable = ['name', 'is_resolved', 'is_default'];
 
     /**
      * Get the project that owns the IssueStatus
