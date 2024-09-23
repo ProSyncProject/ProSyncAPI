@@ -7,6 +7,7 @@ use Dedoc\Scramble\Support\Generator\InfoObject;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -68,5 +69,7 @@ class AppServiceProvider extends ServiceProvider
                 ]
             ], $status);
         });
+
+        Gate::policy(\App\Models\Project::class, \App\Policies\ProjectPolicy::class);
     }
 }

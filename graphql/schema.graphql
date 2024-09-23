@@ -1,8 +1,8 @@
-type Query {
+type Query @guard {
     currentUser: User @auth
 }
 
-type Mutation {
+type Mutation @guard {
     logout: Boolean @auth
 }
 

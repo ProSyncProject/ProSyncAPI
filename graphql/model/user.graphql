@@ -20,6 +20,7 @@ type User {
 }
 
 extend type Query {
+    me: User @auth
     allUsers: [User!]! @all
     paginatedUsers(page: Int! @eq): [User!]! @paginate
     getUserByUniqueId(unique_id: String! @like): User @find

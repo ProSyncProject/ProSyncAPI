@@ -24,26 +24,26 @@ type Project {
     subIssues: [SubIssue!]! @hasManyThrough
 }
 
-extend type Query {
-    allProjects: [Project!]! @all
-    paginatedProjects(page: Int! @eq): [Project!]! @paginate
-    getProjectByUniqueId(unique_id: String! @like): Project @find
-    getProjectByName(name: String! @like): Project @find
-    getProjectByPrefix(prefix: String! @like): Project @find
+extend type Query @guard {
+    allProjects: [Project!]! @all @canModel(model: "Project", ability: "viewAny")
+    paginatedProjects(page: Int! @eq): [Project!]! @paginate @canModel(model: "Project", ability: "viewAny")
+    getProjectByUniqueId(unique_id: String! @like): Project @find @canModel(model: "Project", ability: "view")
+    getProjectByName(name: String! @like): Project @find @canModel(model: "Project", ability: "view")
+    getProjectByPrefix(prefix: String! @like): Project @find @canModel(model: "Project", ability: "view")
 }
 
-extend type Mutation {
+extend type Mutation @guard {
     createProject(
         name: String!
-        description: String
-        prefix: String
-        owner_id: Int!
-        start_date: String
-        end_date: String
-        status: Status!
+        description: String!
+        prefix: String!
+        owner_id: Int
+        start_date: String!
+        end_date: String!
+        status: Status
         parent_id: Int
-        privacy: Privacy!
-    ): Project @create
+        privacy: Privacy
+    ): Project @create @guard @canModel(ability: "create", model: "Project")
 
     updateProject(
         unique_id: String!
@@ -58,5 +58,5 @@ extend type Mutation {
         privacy: Privacy
     ): Project @update
 
-    deleteProject(unique_id: String!): Boolean @delete(model: "Project")
+    deleteProject(unique_id: String!): Boolean @delete(model: "Project") @canModel(model: "Project", ability: "delete")
 }
