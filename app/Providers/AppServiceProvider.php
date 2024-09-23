@@ -71,5 +71,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(\App\Models\Project::class, \App\Policies\ProjectPolicy::class);
+        Gate::policy(\App\Models\Issue::class, \App\Policies\IssuePolicy::class);
     }
 }
