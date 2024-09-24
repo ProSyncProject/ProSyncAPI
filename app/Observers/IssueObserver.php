@@ -23,9 +23,9 @@ class IssueObserver
         $default_priority = $project->priorities()->where('level', 1)->first();
 
         $issue->update([
-            'status_id' => $default_status->id,
-            'priority_id' => $default_priority->id,
-            'reporter_id' => auth()->id(),
+            'status_id' => $issue->status_id ?? $default_status->id,
+            'priority_id' => $issue->priority_id ?? $default_priority->id,
+            'reporter_id' => $issue->reporter_id ?? auth()->id(),
         ]);
     }
 }

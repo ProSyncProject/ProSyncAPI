@@ -21,7 +21,7 @@ class SubIssueObserver
         ]);
 
         $default_status = $project->issueStatuses()->where('is_default', true)->first();
-        $default_priority = $project->issuePriorities()->where('level', 1)->first();
+        $default_priority = $project->priorities()->where('level', 1)->first();
 
         $subIssue->update([
             'status_id' => $default_status->id,

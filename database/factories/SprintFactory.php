@@ -17,8 +17,8 @@ class SprintFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence,
-            'goal' => $this->faker->paragraph,
+            'name' => $this->faker->words(3, true),
+            'goal' => $this->faker->words(6, true),
             'description' => $this->faker->paragraph,
             'project_id' => \App\Models\Project::get()->random()->id,
             'start_date' => $this->faker->date,
