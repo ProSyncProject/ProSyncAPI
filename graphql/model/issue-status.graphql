@@ -13,7 +13,7 @@ type IssueStatus {
 }
 
 extend type Query {
-    allIssueStatuses: [IssueStatus!]! @all
+    allIssueStatuses(project: String): [IssueStatus!]! @field(resolver: "App\\GraphQL\\Queries\\IssueStatusByProject")
     paginatedIssueStatuses(page: Int! @eq): [IssueStatus!]! @paginate
     getIssueStatusByUniqueId(unique_id: String! @like): IssueStatus @find
     getIssueStatusByName(name: String! @like): IssueStatus @find

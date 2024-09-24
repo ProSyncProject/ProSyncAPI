@@ -58,5 +58,7 @@ extend type Mutation {
     ): SubIssue @update
 
     deleteSubIssue(unique_id: String!): Boolean @delete(model: "SubIssue")
+
+    updateSubIssueStatus(subIssueUniqueId: String!, statusId: String!): Issue @field(resolver: "App\\GraphQL\\Mutations\\UpdateSubIssueStatus")
 }
 

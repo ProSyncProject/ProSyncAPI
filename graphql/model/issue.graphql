@@ -60,4 +60,6 @@ extend type Mutation @guard {
     ): Issue @update
 
     deleteIssue(unique_id: String!): Boolean @delete(model: "Issue")
+
+    updateTheIssueStatus(issueUniqueId: String!, statusId: String!): Issue @field(resolver: "App\\GraphQL\\Mutations\\UpdateIssueStatus")
 }
