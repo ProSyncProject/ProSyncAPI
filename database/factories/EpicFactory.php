@@ -17,7 +17,7 @@ class EpicFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence,
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph,
             'project_id' => \App\Models\Project::get()->random()->id,
         ];

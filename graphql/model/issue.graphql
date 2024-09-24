@@ -1,4 +1,4 @@
-type Issue {
+type Issue @guard {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
     issue_number: String!
@@ -11,37 +11,43 @@ type Issue {
     epic_id: Int
     assignee_id: Int
     reporter_id: Int
+    due_date: String
+    sub_issues_count: Int @count(relation: "subIssues")
     deleted_at: String
     created_at: String!
     updated_at: String!
 
     project: Project @belongsTo
-    type: IssueType @belongsTo(relation: "type_id")
-    status: IssueStatus @belongsTo(relation: "status_id")
+    type: IssueType @belongsTo(relation: "type")
+    status: IssueStatus @belongsTo(relation: "status")
     priority: Priority @belongsTo
     epic: Epic @belongsTo
-    assignee: User @belongsTo(relation: "assignee_id")
-    reporter: User @belongsTo(relation: "reporter_id")
+    assignee: User @belongsTo(relation: "assignee")
+    reporter: User @belongsTo(relation: "reporter")
     comments: [Comment!]! @morphMany(relation: "commentable")
-    identifier: Identifier @morphOne(relation: "identifiable")
+    identifier: Identifier @morphOne(relation: "identifier")
+    sprints: [Sprint!]! @belongsToMany
+    activeSprint: [Sprint] @belongsToMany(relation: "activeSprint")
+    subIssues: [SubIssue!]! @hasMany
 }
 
-extend type Query {
-    allIssues: [Issue!]! @all
+extend type Query @guard {
+    allIssues(filter: String, project: String): [Issue!]! @field(resolver: "App\\GraphQL\\Queries\\FilterIssues")
     paginatedIssues(page: Int! @eq): [Issue!]! @paginate
     getIssueByUniqueId(unique_id: String! @like): Issue @find
     getIssueByName(name: String! @like): Issue @find
 }
 
-extend type Mutation {
+input IssueProject {
+    prefix: String!
+}
+
+extend type Mutation @guard {
+    "Create a new issue"
     createIssue(
-        name: String!
-        description: String
-        type_id: Int!
-        status_id: Int!
-        priority_id: Int!
-        epic_id: Int
-    ): Issue @create
+        name: String @rules(apply: ["required", "max:255"])
+        projectPrefix: String @rules(apply: ["required", "max:5"])
+    ): Issue @field(resolver: "App\\GraphQL\\Mutations\\CreateIssue")
 
     updateIssue(
         unique_id: String!
@@ -54,4 +60,6 @@ extend type Mutation {
     ): Issue @update
 
     deleteIssue(unique_id: String!): Boolean @delete(model: "Issue")
+
+    updateTheIssueStatus(issueUniqueId: String!, statusId: String!): Issue @field(resolver: "App\\GraphQL\\Mutations\\UpdateIssueStatus")
 }

@@ -30,8 +30,8 @@ class IssueFactory extends Factory
         $reporter = $project->users->count() ? $project->users->random() : User::factory()->create();
 
         return [
-            'name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->words(8, true),
             'project_id' => $project->id,
             'type_id' => $type->id,
             'status_id' => $status->id,
@@ -39,7 +39,7 @@ class IssueFactory extends Factory
             'epic_id' => $epic->id,
             'assignee_id' => $assignee->id,
             'reporter_id' => $reporter->id,
-            'due_date' => $this->faker->dateTime,
+            'due_date' => $this->faker->dateTimeBetween('-2 months', '+2 months'),
         ];
     }
 }

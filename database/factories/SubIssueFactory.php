@@ -29,14 +29,14 @@ class SubIssueFactory extends Factory
         $reporter = $project->users->count() ? $project->users->random() : User::factory()->create();
 
         return [
-            'name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->words(6, true),
             'issue_id' => $project->id,
             'status_id' => $status->id,
             'priority_id' => $priority->id,
             'assignee_id' => $assignee->id,
             'reporter_id' => $reporter->id,
-            'due_date' => $this->faker->dateTime,
+            'due_date' => $this->faker->dateTimeBetween('-2 months', '+2 months'),
         ];
     }
 }

@@ -22,8 +22,8 @@ class ProjectFactory extends Factory
             $prefix .= $this->faker->randomLetter;
         }
         return [
-            'name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->words(6, true),
             'prefix' => strtoupper($prefix),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),

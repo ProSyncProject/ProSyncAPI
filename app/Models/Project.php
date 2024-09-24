@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use AchyutN\LaravelComment\Traits\HasComment;
+use App\Observers\ProjectObserver;
 use App\Traits\HasUniqueId;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy(ProjectObserver::class)]
 class Project extends Model
 {
     use HasFactory, SoftDeletes, HasComment, HasUniqueId;
@@ -77,6 +80,16 @@ class Project extends Model
     public function sprints(): HasMany
     {
         return $this->hasMany(Sprint::class);
+    }
+
+    /**
+     * Get active sprint for the project.
+     *
+     * @return HasMany|null
+     */
+    public function activeSprint(): HasMany|null
+    {
+        return $this->sprints()->orderBy('start_date', 'desc')->limit(1) ?? null;
     }
 
     /**

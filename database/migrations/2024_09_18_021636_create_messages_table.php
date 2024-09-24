@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('unique_id')->unique();
             $table->foreignIdFor(\App\Models\Channel::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Message::class, 'parent_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Message::class, 'parent_id')->nullable()->constrained('messages')->cascadeOnDelete();
             $table->text('content');
             $table->boolean('forwarded')->default(false);
             $table->dateTime('pinned_at')->nullable();

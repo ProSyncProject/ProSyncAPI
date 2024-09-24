@@ -2,16 +2,18 @@ type IssueStatus {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
     name: String!
-    description: String
+    is_resolved: Boolean!
+    is_default: Boolean!
     deleted_at: String
     created_at: String!
     updated_at: String!
 
     issues: [Issue!]! @hasMany
+    project: Project @belongsTo
 }
 
 extend type Query {
-    allIssueStatuses: [IssueStatus!]! @all
+    allIssueStatuses(project: String): [IssueStatus!]! @field(resolver: "App\\GraphQL\\Queries\\IssueStatusByProject")
     paginatedIssueStatuses(page: Int! @eq): [IssueStatus!]! @paginate
     getIssueStatusByUniqueId(unique_id: String! @like): IssueStatus @find
     getIssueStatusByName(name: String! @like): IssueStatus @find

@@ -11,26 +11,28 @@ type SubIssue {
     epic_id: Int
     assignee_id: Int
     reporter_id: Int
+    due_date: String
     deleted_at: String
     created_at: String!
     updated_at: String!
 
     issue: Issue @belongsTo
-    type: IssueType @belongsTo(relation: "type_id")
-    status: IssueStatus @belongsTo(relation: "status_id")
+    type: IssueType @belongsTo(relation: "type")
+    status: IssueStatus @belongsTo(relation: "status")
     priority: Priority @belongsTo
     epic: Epic @belongsTo
-    assignee: User @belongsTo(relation: "assignee_id")
-    reporter: User @belongsTo(relation: "reporter_id")
+    assignee: User @belongsTo(relation: "assignee")
+    reporter: User @belongsTo(relation: "reporter")
     comments: [Comment!]! @morphMany(relation: "commentable")
     identifier: Identifier @morphOne(relation: "identifiable")
 }
 
 extend type Query {
-    allSubIssues: [SubIssue!]! @all
+    allSubIssues(project: String): [SubIssue!]!  @field(resolver: "App\\GraphQL\\Queries\\FilterSubIssues")
     paginatedSubIssues(page: Int! @eq): [SubIssue!]! @paginate
     getSubIssueByUniqueId(unique_id: String! @like): SubIssue @find
     getSubIssueByName(name: String! @like): SubIssue @find
+    getSubIssuesByIssue(issue_unique_id: String!): [SubIssue!]! @field(resolver: "App\\GraphQL\\Queries\\SubIssuesByIssue")
 }
 
 extend type Mutation {
@@ -56,5 +58,7 @@ extend type Mutation {
     ): SubIssue @update
 
     deleteSubIssue(unique_id: String!): Boolean @delete(model: "SubIssue")
+
+    updateSubIssueStatus(subIssueUniqueId: String!, statusId: String!): Issue @field(resolver: "App\\GraphQL\\Mutations\\UpdateSubIssueStatus")
 }
 

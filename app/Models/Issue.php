@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 #[ObservedBy([IssueObserver::class])]
 class Issue extends Model
@@ -26,8 +27,8 @@ class Issue extends Model
         'name',
         'description',
         'project_id',
-        'issue_type_id',
-        'issue_status_id',
+        'type_id',
+        'status_id',
         'priority_id',
         'epic_id',
         'assignee_id',
@@ -120,11 +121,11 @@ class Issue extends Model
     /**
      * Get active sprint for the issue.
      *
-     * @return Sprint
+     * @return BelongsToMany|null
      */
-    public function activeSprint(): Sprint
+    public function activeSprint(): BelongsToMany|null
     {
-        return $this->sprints()->orderBy('start_date', 'desc')->first();
+        return $this->sprints()->orderBy('start_date', 'desc')->limit(1) ?? null;
     }
 
     /**
@@ -135,5 +136,31 @@ class Issue extends Model
     public function subIssues(): HasMany
     {
         return $this->hasMany(SubIssue::class);
+    }
+
+    /**
+     * Scope to get completed issues.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->whereHas('status', function ($query) {
+            $query->where('is_resolved', true);
+        });
+    }
+
+    /**
+     * Scope to get not completed issues.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotCompleted(Builder $query): Builder
+    {
+        return $query->whereHas('status', function ($query) {
+            $query->where('is_resolved', false);
+        });
     }
 }

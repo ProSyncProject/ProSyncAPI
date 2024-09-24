@@ -16,13 +16,15 @@ class SprintFactory extends Factory
      */
     public function definition(): array
     {
+        $project = \App\Models\Project::get()->random();
+        $sprints = $project->sprints;
         return [
-            'name' => $this->faker->sentence,
-            'goal' => $this->faker->paragraph,
+            'name' => "Sprint " . ($sprints->count() + 1),
+            'goal' => $this->faker->words(6, true),
             'description' => $this->faker->paragraph,
-            'project_id' => \App\Models\Project::get()->random()->id,
-            'start_date' => $this->faker->date,
-            'end_date' => $this->faker->date,
+            'project_id' => $project->id,
+            'start_date' => $this->faker->dateTimeBetween('-2 months', '+2 months'),
+            'end_date' => $this->faker->dateTimeBetween('+3 months', '+5 months'),
             'completed_at' => $this->faker->randomElement([null, $this->faker->dateTime]),
         ];
     }

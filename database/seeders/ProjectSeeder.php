@@ -7,6 +7,7 @@ use App\Models\Issue;
 use App\Models\Project;
 use App\Models\Sprint;
 use App\Models\SubIssue;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,12 +18,16 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::factory()->count(10)
-            ->hasEpics(2)->has(
-                Sprint::factory()->count(3)
-                    ->has(Issue::factory()->count(5)
+        Project::factory()
+            ->hasAttached(User::find(1), ['role' => 'owner'])
+            ->hasAttached(User::factory()->count(5), ['role' => 'member'])
+            ->hasEpics(2)
+            ->has(
+                Sprint::factory()->count(1)
+                    ->has(Issue::factory()->count(15)
                         ->has(SubIssue::factory()->count(3))
                     )
-            )->create();
+            )
+            ->create();
     }
 }
