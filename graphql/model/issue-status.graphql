@@ -2,12 +2,14 @@ type IssueStatus {
     id: Int! @hide(env: ["production", "local"])
     unique_id: String!
     name: String!
-    description: String
+    is_resolved: Boolean!
+    is_default: Boolean!
     deleted_at: String
     created_at: String!
     updated_at: String!
 
     issues: [Issue!]! @hasMany
+    project: Project @belongsTo
 }
 
 extend type Query {

@@ -139,15 +139,4 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps()
             ->withPivot('is_creator');
     }
-
-    /**
-     * Get the assigned and created issues for the user.
-     *
-     * @return HasMany
-     */
-    public function assignedAndCreatedIssues() : HasMany
-    {
-        return $this->hasMany(Issue::class, 'assignee_id')
-            ->union($this->createdIssues());
-    }
 }
