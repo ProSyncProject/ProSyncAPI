@@ -15,8 +15,8 @@ class ProjectObserver
 
         $statuses = ['To Do', 'In Progress', 'Completed'];
 
-        foreach ($statuses as $status) {
-            $project->issueStatuses()->create(['name' => $status, 'is_resolved' => $status === 'Completed', 'is_default' => $status === 'To Do']);
+        foreach ($statuses as $index => $status) {
+            $project->issueStatuses()->create(['name' => $status, 'is_resolved' => $status === 'Completed', 'is_default' => $status === 'To Do', 'order' => $index]);
         }
 
         $priorities = ['Low', 'Medium', 'High'];

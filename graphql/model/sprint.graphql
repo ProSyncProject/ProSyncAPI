@@ -23,6 +23,7 @@ extend type Query {
     paginatedSprints(page: Int! @eq): [Sprint!]! @paginate
     getSprintByUniqueId(unique_id: String! @like): Sprint @find
     getSprintByName(name: String! @like): Sprint @find
+    getActiveSprint(project: String!): Sprint @field(resolver: "App\\GraphQL\\Queries\\ActiveSprint")
 }
 
 extend type Mutation {

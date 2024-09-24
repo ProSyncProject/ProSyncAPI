@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('unique_id')->unique();
             $table->string('name');
             $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
+            $table->integer('order')->default(0);
             $table->boolean('is_default')->default(false);
             $table->boolean('is_resolved')->default(false);
             $table->softDeletes();

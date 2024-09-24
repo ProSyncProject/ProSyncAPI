@@ -22,6 +22,7 @@ type Project {
     identifiers: [Identifier!]! @hasMany(relation: "identifiers")
     issues: [Issue!]! @hasMany
     subIssues: [SubIssue!]! @hasManyThrough
+    activeSprint: [Sprint] @hasMany
 }
 
 extend type Query @guard {

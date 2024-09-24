@@ -12,6 +12,7 @@ type Issue @guard {
     assignee_id: Int
     reporter_id: Int
     due_date: String
+    sub_issues_count: Int @count(relation: "subIssues")
     deleted_at: String
     created_at: String!
     updated_at: String!
@@ -27,6 +28,7 @@ type Issue @guard {
     identifier: Identifier @morphOne(relation: "identifier")
     sprints: [Sprint!]! @belongsToMany
     activeSprint: [Sprint] @belongsToMany(relation: "activeSprint")
+    subIssues: [SubIssue!]! @hasMany
 }
 
 extend type Query @guard {
