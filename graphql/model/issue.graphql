@@ -27,7 +27,7 @@ type Issue @guard {
 }
 
 extend type Query @guard {
-    allIssues: [Issue!]! @all
+    allIssues(filter: String): [Issue!]! @field(resolver: "App\\GraphQL\\Queries\\FilterIssues")
     paginatedIssues(page: Int! @eq): [Issue!]! @paginate
     getIssueByUniqueId(unique_id: String! @like): Issue @find
     getIssueByName(name: String! @like): Issue @find

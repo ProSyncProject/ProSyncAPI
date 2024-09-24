@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 #[ObservedBy([IssueObserver::class])]
 class Issue extends Model
@@ -135,5 +135,31 @@ class Issue extends Model
     public function subIssues(): HasMany
     {
         return $this->hasMany(SubIssue::class);
+    }
+
+    /**
+     * Scope to get completed issues.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeCompleted(Builder $query): Builder
+    {
+        return $query->whereHas('status', function ($query) {
+            $query->where('is_resolved', true);
+        });
+    }
+
+    /**
+     * Scope to get not completed issues.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotCompleted(Builder $query): Builder
+    {
+        return $query->whereHas('status', function ($query) {
+            $query->where('is_resolved', false);
+        });
     }
 }
