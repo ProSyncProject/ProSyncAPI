@@ -11,6 +11,7 @@ type Issue @guard {
     epic_id: Int
     assignee_id: Int
     reporter_id: Int
+    due_date: String
     deleted_at: String
     created_at: String!
     updated_at: String!
@@ -24,6 +25,8 @@ type Issue @guard {
     reporter: User @belongsTo(relation: "reporter")
     comments: [Comment!]! @morphMany(relation: "commentable")
     identifier: Identifier @morphOne(relation: "identifier")
+    sprints: [Sprint!]! @belongsToMany
+    activeSprint: [Sprint] @belongsToMany(relation: "activeSprint")
 }
 
 extend type Query @guard {

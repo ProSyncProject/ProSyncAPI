@@ -39,7 +39,7 @@ class IssueFactory extends Factory
             'epic_id' => $epic->id,
             'assignee_id' => $assignee->id,
             'reporter_id' => $reporter->id,
-            'due_date' => $this->faker->dateTime,
+            'due_date' => $this->faker->dateTimeBetween('-2 months', '+2 months'),
         ];
     }
 }

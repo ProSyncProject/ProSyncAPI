@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -120,11 +121,11 @@ class Issue extends Model
     /**
      * Get active sprint for the issue.
      *
-     * @return Sprint
+     * @return BelongsToMany|null
      */
-    public function activeSprint(): Sprint
+    public function activeSprint(): BelongsToMany|null
     {
-        return $this->sprints()->orderBy('start_date', 'desc')->first();
+        return $this->sprints()->orderBy('start_date', 'desc')->limit(1) ?? null;
     }
 
     /**

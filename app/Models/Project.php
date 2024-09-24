@@ -83,6 +83,16 @@ class Project extends Model
     }
 
     /**
+     * Get active sprint for the project.
+     *
+     * @return Sprint|null
+     */
+    public function activeSprint(): Sprint|null
+    {
+        return $this->sprints()->orderBy('start_date', 'desc')->first();
+    }
+
+    /**
      * The issue types associated with the project
      *
      * @return HasMany
