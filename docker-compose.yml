@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+    app:
+        image: prosync:app
+        volumes:
+            - .:/var/www/html
+            - ./php.ini:/usr/local/etc/php/php.ini
+        ports:
+            - "80:80"
+        environment:
+            - APACHE_DOCUMENT_ROOT=/var/www/html/public
+        depends_on:
+            - db
+        networks:
+            - prosync_network
+
+    db:
+        image: mariadb:10.4
+        ports:
+            - "127.0.0.1:3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: "ProSync@Pass"
+            MYSQL_DATABASE: "prosync"
+            MYSQL_USER: "prosync"
+            MYSQL_PASSWORD: "ProSync@Pass"
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - prosync_network
+
+networks:
+    prosync_network:
+
+volumes:
+    db_data:

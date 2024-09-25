@@ -6,12 +6,13 @@ type Channel {
     privacy: Privacy!
     project_id: Int
     is_seen: Boolean!
+    users_count: Int @count(relation: "users")
     deleted_at: String
     created_at: String
     updated_at: String
 
     project: Project @belongsTo
-    users: [User!]! @belongsToMany(relation: "channel_user")
+    users: [User!]! @belongsToMany(relation: "users")
     messages: [Message!]! @morphMany(relation: "messages")
 }
 
@@ -26,9 +27,10 @@ extend type Mutation {
     createChannel(
         name: String!
         description: String
-        privacy: Privacy!
+        privacy: Privacy
         project_id: Int
-    ): Channel @create
+        users: [String]
+    ): Channel @field(resolver: "App\\GraphQL\\Mutations\\CreateChannel")
 
     updateChannel(
         unique_id: String!
