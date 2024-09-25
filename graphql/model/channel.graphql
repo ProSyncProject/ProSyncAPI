@@ -20,7 +20,7 @@ type Channel {
 extend type Query {
     allChannels: [Channel!]! @all @guard
     paginatedChannels(page: Int! @eq): [Channel!]! @paginate
-    getChannelByUniqueId(unique_id: String! @eq): Channel @find
+    getChannelByUniqueId(unique_id: String! @eq): Channel @find(model: "Channel")
     getChannelByName(name: String! @like): Channel @find
 }
 

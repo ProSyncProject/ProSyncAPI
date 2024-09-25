@@ -22,10 +22,11 @@ type Message {
 }
 
 extend type Query {
-    allMessages: [Message!]! @all
+    allMessages(channel: String!): [Message!]! @all
     paginatedMessages(page: Int! @eq): [Message!]! @paginate
     getMessageByUniqueId(unique_id: String! @eq): Message @find
     getMessageByContent(content: String! @like): Message @find
+    allMessagesByChannel(channel: String!): [Message!]! @field(resolver: "App\\GraphQL\\Queries\\MessagesFilter")
 }
 
 extend type Mutation {
