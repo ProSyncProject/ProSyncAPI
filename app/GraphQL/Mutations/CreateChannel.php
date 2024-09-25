@@ -10,18 +10,20 @@ final readonly class CreateChannel
     /** @param  array{}  $args */
     public function __invoke(null $_, array $args)
     {
-        $channelName= array_key_exists('name', $args) ? $args['name'] : null;
+        $channelName = array_key_exists('name', $args) ? $args['name'] : null;
         $userUniqueIds = array_key_exists('users', $args) ? $args['users'] : null;
 
         $userUniqueIds = array_merge($userUniqueIds, [auth()->user()->unique_id]);
         $users = User::whereIn('unique_id', $userUniqueIds)->get();
 
-        $channel = Channel::whereHas('users', function ($query) use ($users) {
-            $query->whereIn('users.id', $users->pluck('id'));
-        }, '=', $users->count())->first();
+        if ($channelName == "") {
+            $channel = Channel::whereHas('users', function ($query) use ($users) {
+                $query->whereIn('users.id', $users->pluck('id'));
+            }, '=', $users->count())->first();
 
-        if ($channel) {
-            return $channel;
+            if ($channel) {
+                return $channel;
+            }
         }
 
         $channel = Channel::create([

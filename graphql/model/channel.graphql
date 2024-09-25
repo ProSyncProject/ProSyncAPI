@@ -7,6 +7,7 @@ type Channel {
     project_id: Int
     is_seen: Boolean!
     users_count: Int @count(relation: "users")
+    type: String
     deleted_at: String
     created_at: String
     updated_at: String

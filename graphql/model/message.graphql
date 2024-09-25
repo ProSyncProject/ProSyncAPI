@@ -29,16 +29,15 @@ extend type Query {
 }
 
 extend type Mutation {
-    createMessage(
-        channel_id: Int!
-        user_id: Int!
+    createMessage (
+        channel_id: String!
         parent_id: Int
         content: String!
-        forwarded: Boolean!
-        is_pinned: Boolean!
-        is_saved: Boolean!
-        is_seen: Boolean!
-    ): Message @create
+        forwarded: Boolean
+        is_pinned: Boolean
+        is_saved: Boolean
+        is_seen: Boolean
+    ): Message @field(resolver: "App\\GraphQL\\Mutations\\CreateMessage")
 
     updateMessage(
         unique_id: String!
