@@ -1,7 +1,7 @@
 type Channel {
     id: ID!
     unique_id: String!
-    name: String!
+    name: String
     description: String
     privacy: Privacy!
     project_id: Int
@@ -17,7 +17,7 @@ type Channel {
 }
 
 extend type Query {
-    allChannels: [Channel!]! @all
+    allChannels: [Channel!]! @all @guard
     paginatedChannels(page: Int! @eq): [Channel!]! @paginate
     getChannelByUniqueId(unique_id: String! @eq): Channel @find
     getChannelByName(name: String! @like): Channel @find
@@ -25,12 +25,12 @@ extend type Query {
 
 extend type Mutation {
     createChannel(
-        name: String!
+        name: String
         description: String
         privacy: Privacy
         project_id: Int
         users: [String]
-    ): Channel @field(resolver: "App\\GraphQL\\Mutations\\CreateChannel")
+    ): Channel @guard @field(resolver: "App\\GraphQL\\Mutations\\CreateChannel")
 
     updateChannel(
         unique_id: String!

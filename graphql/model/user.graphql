@@ -22,6 +22,7 @@ type User {
 extend type Query {
     me: User @auth
     allUsers(project: String): [User!]! @field(resolver: "App\\GraphQL\\Queries\\FilterUsers")
+    otherUsers: [User!]! @field(resolver: "App\\GraphQL\\Queries\\OtherUsersOnly")
     paginatedUsers(page: Int! @eq): [User!]! @paginate
     getUserByUniqueId(unique_id: String! @like): User @find
     getUserByEmail(email: String! @like): User @find
