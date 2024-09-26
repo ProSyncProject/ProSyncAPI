@@ -1,34 +1,37 @@
 type Channel {
     id: ID!
     unique_id: String!
-    name: String!
+    name: String
     description: String
     privacy: Privacy!
     project_id: Int
     is_seen: Boolean!
+    users_count: Int @count(relation: "users")
+    type: String
     deleted_at: String
     created_at: String
     updated_at: String
 
     project: Project @belongsTo
-    users: [User!]! @belongsToMany(relation: "channel_user")
+    users: [User!]! @belongsToMany(relation: "users")
     messages: [Message!]! @morphMany(relation: "messages")
 }
 
 extend type Query {
-    allChannels: [Channel!]! @all
+    allChannels: [Channel!]! @all @guard
     paginatedChannels(page: Int! @eq): [Channel!]! @paginate
-    getChannelByUniqueId(unique_id: String! @eq): Channel @find
+    getChannelByUniqueId(unique_id: String! @eq): Channel @find(model: "Channel")
     getChannelByName(name: String! @like): Channel @find
 }
 
 extend type Mutation {
     createChannel(
-        name: String!
+        name: String
         description: String
-        privacy: Privacy!
+        privacy: Privacy
         project_id: Int
-    ): Channel @create
+        users: [String]
+    ): Channel @guard @field(resolver: "App\\GraphQL\\Mutations\\CreateChannel")
 
     updateChannel(
         unique_id: String!

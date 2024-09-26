@@ -16,7 +16,7 @@ return [
         /*
          * The URI the endpoint responds to, e.g. mydomain.com/graphql.
          */
-        'uri' => '/api/v1/graphql',
+        'uri' => '/graphql',
 
         /*
          * Lighthouse creates a named route for convenient URL generation and redirects.
@@ -420,6 +420,11 @@ return [
                 'driver' => 'echo',
                 'connection' => env('LIGHTHOUSE_SUBSCRIPTION_REDIS_CONNECTION', 'default'),
                 'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@echoRoutes',
+            ],
+            'reverb' => [
+                'driver' => 'pusher',
+                'connection' => 'reverb',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@pusher',
             ],
         ],
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
             $table->string('unique_id')->unique();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->foreignIdFor(\App\Models\Project::class)->nullable()->constrained()->cascadeOnDelete();
             $table->enum('privacy', ['public', 'private'])->default('public');

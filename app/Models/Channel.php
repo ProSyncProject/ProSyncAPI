@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Channel extends Model
 {
@@ -22,7 +23,7 @@ class Channel extends Model
         'privacy',
     ];
 
-    protected $appends = ['is_seen'];
+    protected $appends = ['is_seen', 'name', 'type'];
 
     /**
      * Get the project that owns the channel.
@@ -65,5 +66,49 @@ class Channel extends Model
     public function getIsSeenAttribute(): bool
     {
         return $this->messages->last()->is_seen;
+    }
+
+    /**
+     * Overwrite the name of the channel.
+     *
+     * @return string|null
+     */
+    public function getNameAttribute(): string|null
+    {
+        $dbQuery = DB::table('channels')->where('id', $this->id)->first();
+
+        if ($dbQuery->name) {
+            return $dbQuery->name;
+        }
+
+        if ($this->project) {
+            return $this->name . '(' . $this->project->prefix . ')';
+        }
+
+        if ($this->users->count() === 2) {
+            return $this->users->where('unique_id', '!=', auth()->user()->unique_id)->first()->full_name;
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * Get the type of the channel.
+     *
+     * @return string
+     */
+    public function getTypeAttribute(): string
+    {
+        $dbQuery = DB::table('channels')->where('id', $this->id)->first();
+
+        if ($dbQuery->name) {
+            return 'channel';
+        }
+
+        if ($this->users->count() === 2) {
+            return 'direct';
+        }
+
+        return 'channel';
     }
 }
