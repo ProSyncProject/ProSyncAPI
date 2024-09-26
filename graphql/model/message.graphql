@@ -1,5 +1,4 @@
 type Message {
-    id: ID!
     unique_id: String!
     channel_id: Int!
     user_id: Int!
@@ -29,6 +28,10 @@ extend type Query {
     allMessagesByChannel(channel: String!): [Message!]! @field(resolver: "App\\GraphQL\\Queries\\MessagesFilter")
 }
 
+extend type Subscription {
+    messageCreated(channel: String!): Message
+}
+
 extend type Mutation {
     createMessage (
         channel_id: String!
@@ -38,7 +41,7 @@ extend type Mutation {
         is_pinned: Boolean
         is_saved: Boolean
         is_seen: Boolean
-    ): Message @field(resolver: "App\\GraphQL\\Mutations\\CreateMessage")
+    ): Message @field(resolver: "App\\GraphQL\\Mutations\\CreateMessage") @broadcast(subscription: "messageCreated")
 
     updateMessage(
         unique_id: String!

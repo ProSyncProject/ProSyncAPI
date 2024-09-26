@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Models\Channel;
 use App\Models\Message;
+use Nuwave\Lighthouse\Execution\Utils\Subscription;
 
 final readonly class CreateMessage
 {
@@ -19,10 +20,12 @@ final readonly class CreateMessage
             throw new \Exception('Channel not found');
         }
 
-        return Message::create([
+        $message = Message::create([
             'content' => $content,
             'channel_id' => $channel->id,
             'user_id' => auth()->user()->id,
         ]);
+
+        return $message;
     }
 }

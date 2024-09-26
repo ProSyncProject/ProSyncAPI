@@ -6,5 +6,9 @@ type Mutation @guard {
     logout: Boolean @auth
 }
 
+type Subscription @guard {
+    userLoggedIn: User @auth @broadcast(subscription: "userLoggedIn")
+}
+
 #import enum.graphql
 #import model/*.graphql
