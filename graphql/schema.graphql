@@ -4,6 +4,11 @@ type Query @guard {
 
 type Mutation @guard {
     logout: Boolean @auth
+    reAssign(
+        assignee: String!
+        uniqueId: String!
+        type: String!
+    ): User @guard @field(resolver: "App\\GraphQL\\Mutations\\ReAssignIssueOrSubIssue")
 }
 
 type Subscription @guard {
