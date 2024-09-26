@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Issue;
+use App\Models\Notification;
 use App\Models\SubIssue;
 use App\Models\User;
 
@@ -27,7 +28,19 @@ final readonly class ReAssignIssueOrSubIssue
 
         $user = User::where('unique_id', $assigneeId)->first();
 
-        $query->where('unique_id', $uniqueId)->update(['assignee_id' => $user->id]);
+        $issueSubIssue = $query->where('unique_id', $uniqueId)->first();
+
+        $issueSubIssue->update(['assignee_id' => $user->id]);
+
+        $theType = $type === 'issue' ? 'issue' : 'sub-issue';
+
+        if($user->id !== auth()->id()) {
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => 'You have been assigned to ' . $theType . ' ' . $issueSubIssue->issue_number,
+            ]);
+        }
+
         return $user;
     }
 }

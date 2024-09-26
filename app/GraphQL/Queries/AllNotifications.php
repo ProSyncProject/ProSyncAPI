@@ -7,6 +7,6 @@ final readonly class AllNotifications
     /** @param  array{}  $args */
     public function __invoke(null $_, array $args)
     {
-        return auth()->user()->notifications;
+        return auth()->user()->notifications->sortByDesc('id')->sortByDesc('created_at');
     }
 }
