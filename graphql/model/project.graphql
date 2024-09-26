@@ -23,14 +23,15 @@ type Project {
     issues: [Issue!]! @hasMany
     subIssues: [SubIssue!]! @hasManyThrough
     activeSprint: [Sprint] @hasMany
+    sprints: [Sprint!]! @hasMany
 }
 
 extend type Query @guard {
     allProjects: [Project!]! @all @canModel(model: "Project", ability: "viewAny")
     paginatedProjects(page: Int! @eq): [Project!]! @paginate @canModel(model: "Project", ability: "viewAny")
-    getProjectByUniqueId(unique_id: String! @like): Project @find @canModel(model: "Project", ability: "view")
+    getProjectByUniqueId(unique_id: String!): Project @guard @field(resolver: "App\\GraphQL\\Queries\\GetProjectByUniqueId")
     getProjectByName(name: String! @like): Project @find @canModel(model: "Project", ability: "view")
-    getProjectByPrefix(prefix: String! @like): Project @find @canModel(model: "Project", ability: "view")
+    getProjectByPrefix(prefix: String! @like): Project @find
 }
 
 extend type Mutation @guard {
