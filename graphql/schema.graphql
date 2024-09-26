@@ -7,7 +7,7 @@ type Mutation @guard {
 }
 
 type Subscription @guard {
-    userLoggedIn: User @auth @broadcast(subscription: "userLoggedIn")
+    userLoggedIn: User @auth
 }
 
 #import enum.graphql
