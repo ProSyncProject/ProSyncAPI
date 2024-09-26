@@ -50,4 +50,5 @@ extend type Mutation {
     ): User @update
 
     deleteUser(unique_id: String!): Boolean @delete(model: "User")
+    markAllNotificationsAsRead: User @field(resolver: "App\\GraphQL\\Mutations\\MarkAllNotificationsAsRead")
 }
