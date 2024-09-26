@@ -9,6 +9,6 @@ final readonly class MarkAllNotificationsAsRead
     {
         $notifications = auth()->user()->notifications()->whereNull('read_at')->get();
         $notifications->each->markAsRead();
-        return true;
+        return auth()->user();
     }
 }
