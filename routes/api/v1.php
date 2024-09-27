@@ -23,6 +23,9 @@ Route::group([
     Route::post('/forgot-password', 'forgotPassword')->name('forgot-password');
     Route::post('/reset-password', 'resetPassword')->name('reset-password');
 
+    Route::post('/github', 'github')->name('github');
+    Route::post('/github/login', 'githubLogin')->name('github-login');
+
     Route::group([
         'middleware' => 'auth:sanctum'
     ], function() {

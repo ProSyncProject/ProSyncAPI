@@ -52,6 +52,11 @@ class UserResource extends JsonResource
              */
             'full_name' => $this->full_name,
             /**
+             * @var string $github_id The github_id of the user
+             * @example "github_id"
+             */
+            'github_id' => $this->github_id,
+            /**
              * @var string $email The email of the user
              * @format email
              * @example "achyutkneupane@gmail.com"

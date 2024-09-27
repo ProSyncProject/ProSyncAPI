@@ -46,8 +46,7 @@ extend type Mutation {
         last_name: String
         username: String
         email: String
-        password: String
-    ): User @update
+    ): User @field(resolver: "App\\GraphQL\\Mutations\\UpdateUser")
 
     deleteUser(unique_id: String!): Boolean @delete(model: "User")
     markAllNotificationsAsRead: User @field(resolver: "App\\GraphQL\\Mutations\\MarkAllNotificationsAsRead")
