@@ -214,42 +214,18 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Assign a user to Github
-     *
-     * @param Request $request
-     * @return JsonResponse
-     * @response array{"status": 200, "message": "User assigned to Github successfully."}
-     */
-    public function github(Request $request): JsonResponse
-    {
-        try {
-            $user = $request->user();
-            $user->update([
-                'firebase_id' => $request->firebase_id,
-                'github_id' => $request->github_id,
-                'github_token' => $request->github_token,
-                'github_refresh_token' => $request->github_refresh_token,
-                'github_username' => $request->github_username,
-            ]);
-        } catch (\Exception $e) {
-            return Response::error($e);
-        }
-        return Response::success(null, "Github authorized successfully.");
-    }
-
-    /**
      * Login a user using Github
      *
      * @param Request $request
      * @return JsonResponse
      * @response array{"status": 200, "message": "User logged in using Github successfully.", "data": UserResource}
      */
-    public function githubLogin(Request $request): JsonResponse
+    public function github(Request $request): JsonResponse
     {
         try {
-            $user = User::where('github_id', $request->github_id)->first();
+            $user = User::where('firebase_id', $request->firebase_id)->first();
             if (!$user) {
-                Response::validate("login", "No user found with the given Github ID.");
+                Response::validate("login", "No user found with the given Firbase ID.");
             }
             $token = $user->createToken("auth_token")->plainTextToken;
             $user->token = $token;

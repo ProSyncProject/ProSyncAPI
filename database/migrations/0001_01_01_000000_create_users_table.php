@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            $table->string('firebase_uid')->nullable();
+            $table->string('firebase_id')->nullable();
 
             $table->string('github_id')->nullable();
             $table->string('github_token')->nullable();

@@ -7,6 +7,8 @@ type User {
     full_name: String!
     username: String!
     email: String!
+    github_id: String
+    github_username: String
     email_verified_at: String
     password: String! @hide(env: ["production", "local"])
     rememberToken: String
@@ -27,6 +29,14 @@ extend type Query {
     getUserByUniqueId(unique_id: String! @like): User @find
     getUserByEmail(email: String! @like): User @find
     getUserByUsername(username: String! @like): User @find
+}
+
+input GithubAuthorizationInput {
+    firebase_id: String!
+    github_id: String!
+    github_token: String
+    github_refresh_token: String
+    github_username: String!
 }
 
 extend type Mutation {
@@ -50,4 +60,5 @@ extend type Mutation {
 
     deleteUser(unique_id: String!): Boolean @delete(model: "User")
     markAllNotificationsAsRead: User @field(resolver: "App\\GraphQL\\Mutations\\MarkAllNotificationsAsRead")
+    authorizeGithub(inputs: GithubAuthorizationInput): User @field(resolver: "App\\GraphQL\\Mutations\\AuthorizeGithub")
 }
