@@ -212,4 +212,27 @@ class AuthenticationController extends Controller
         }
         return Response::success(null, "User logged out successfully.");
     }
+
+    /**
+     * Login a user using Github
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @response array{"status": 200, "message": "User logged in using Github successfully.", "data": UserResource}
+     */
+    public function github(Request $request): JsonResponse
+    {
+        try {
+            $user = User::where('firebase_id', $request->firebase_id)->first();
+            if (!$user) {
+                Response::validate("login", "No user found with the given Firbase ID.");
+            }
+            $token = $user->createToken("auth_token")->plainTextToken;
+            $user->token = $token;
+            $resource = new UserResource($user);
+        } catch (\Exception $e) {
+            return Response::error($e);
+        }
+        return Response::success($resource, "User logged in using Github successfully.");
+    }
 }
